@@ -1,0 +1,48 @@
+%include agda.fmt
+
+\newcommand{\relation}[1]{\kern1.5pt\mathrel{#1}\kern1pt}
+\newcommand{\operator}[1]{\kern-2pt\mathop{#1}\kern-3pt}
+\newcommand{\constant}[1]{\texttt{#1}}
+
+%subst varid x = "\textit{" x "}"
+%subst conid x = "\textit{" x "}"
+
+%format ( = "\text("
+%format ) = "\text)"
+%format , = "\text{\,,~}"
+%format -> = "\relation{\to}"
+%format \ = "\lambda\kern1.5pt"
+%format (highlight(x)) = "{\color{red}" x "}"
+%format (dehighlight(x)) = "{\color[gray]{.9}" x "}"
+%format (sub(s)(t)) = s "_{\kern.5pt" t "}"
+%format 0 = "\mathsf 0"
+%format 1 = "\mathsf 1"
+
+%format : = "\relation{:}"
+%format :: = "\relation{::}"
+%format ENTAILS = "\relation{\vdash}\!"
+%format BIND = "\kern-2pt."
+%format ; = "\text{\,;~}"
+%format SET = "\;\text{\bfseries\sffamily set}"
+%format TIMES = "\operator{\times}"
+%format fst = "\constant{fst}"
+%format snd = "\constant{snd}"
+%format fst' = "\textit{fst}"
+%format snd' = "\textit{snd}"
+%format PLUS = "\operator{+}"
+%format left = "\constant{left}"
+%format right = "\constant{right}"
+%format case = "\constant{case}"
+%format TOP = "\top"
+%format unit = "\constant{unit}"
+%format BOT = "\bot"
+%format absurd = "\constant{absurd}"
+%format NEG = "\neg\!"
+
+%format Nat = "\mathbb N"
+%format Gamma = "\Gamma"
+
+%format YCOMB = "\constant{Y}\kern-1.5pt"
+
+\renewcommand{\rule}[1]{\RightLabel{\footnotesize (#1)}}
+
