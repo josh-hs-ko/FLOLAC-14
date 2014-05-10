@@ -1,0 +1,155 @@
+%include agda.fmt
+
+\newcommand{\relation}[1]{\kern1.5pt\mathrel{#1}\kern1pt}
+\newcommand{\operator}[1]{\kern-2pt\mathop{#1}\kern-3pt}
+\newcommand{\constant}[1]{\texttt{#1}}
+
+%subst varid x = "\textit{" x "}"
+%subst conid x = "\textit{" x "}"
+
+%format ( = "\text("
+%format ) = "\text)"
+%format , = "\text{\,,~}"
+%format -> = "\relation{\to}"
+%format \ = "\lambda\kern1pt"
+%format (highlight(x)) = "{\color{red}" x "}"
+%format (dehighlight(x)) = "{\color[gray]{.9}" x "}"
+%format (sub (t)) = "\mkern-\medmuskip_{" t "}"
+%format (subst (t) (x)) = "\![\kern.5pt" t "/" x "\kern1.225pt]"
+%format (Subst (t) (x)) = "\![\kern.5pt" t "\kern1pt/\kern1pt" x "\kern1.225pt]"
+%format SEP = "\mkern-2\thickmuskip\kern1.25pt"
+%format 0 = "\mathsf 0"
+%format 1 = "\mathsf 1"
+
+%format : = "\relation{:}\kern.5pt"
+%format :: = "\relation{::}"
+%format ENTAILS = "\relation{\vdash}\!"
+%format BIND = "\kern-2pt."
+%format = = "\relation{=}\kern-.75pt"
+%format DEFEQ = "\kern-2pt\mathrel{\mathop:}=\kern-2pt"
+%format IN = "\kern1.5pt\in\kern-1.5pt"
+%format ; = "\text{\,;~}"
+%format U = "\mathcal U"
+%format TIMES = "\operator{\times}"
+%format fst = "\constant{fst}"
+%format snd = "\constant{snd}"
+%format fst' = "\textit{fst}"
+%format snd' = "\textit{snd}"
+%format PLUS = "\operator{+}"
+%format left = "\constant{left}"
+%format right = "\constant{right}"
+%format case = "\constant{case}"
+%format TOP = "\mathbf 1"
+%format unit = "\constant{unit}"
+%format BOT = "\mathbf 0"
+%format absurd = "\constant{absurd}"
+%format NEG = "\neg\!"
+%format Pi' = "\Pi"
+%format (Pi x (t)) = "\Pi\kern1pt\text(" x ":\kern-.75pt" t "\text)\kern1.5pt"
+%format Sigma' = "\Sigma"
+%format (Sigma x (t)) = "\Sigma\kern1pt\text(" x ":\kern-.75pt" t "\text)\kern1.5pt"
+%format (equiv(t)) = "\kern-1.5pt\equiv_{" t "}\kern-2pt"
+%format EQUIV = "\kern-1.5pt\equiv\kern-2.75pt"
+%format refl = "\constant{refl}"
+%format J = "\constant{J}"
+%format J' = "J"
+
+%format Nat = "\mathbb N"
+%format Gamma = "\Gamma"
+
+%format YCOMB = "\constant{Y}\kern-1.5pt"
+
+\renewcommand{\rule}[1]{\RightLabel{\footnotesize (#1)}}
+
+\usepackage{fontspec}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+\usepackage{graphicx}
+
+\useinnertheme{rectangles}
+\usecolortheme{whale}
+\usecolortheme{orchid}
+% \useoutertheme[footline=authortitle]{miniframes}
+
+\definecolor{OxfordBlue}{RGB}{0,33,71}
+\definecolor{OxfordMidBlue}{RGB}{75,146,219}
+\definecolor{OxfordPastelBlue}{RGB}{197,210,224}
+\definecolor{OxfordGreen}{RGB}{0,87,81}
+\definecolor{OxfordMidGreen}{RGB}{124,162,149}
+\definecolor{OxfordPastelGreen}{RGB}{190,197,194}
+\definecolor{OxfordBrown}{RGB}{89,44,53}
+\definecolor{OxfordMidBrown}{RGB}{171,136,118}
+\definecolor{OxfordPastelBrown}{RGB}{202,192,182}
+\definecolor{OxfordRed}{RGB}{130,36,51}
+\definecolor{OxfordMidRed}{RGB}{219,77,105}
+\definecolor{OxfordPastelRed}{RGB}{233,197,203}
+\definecolor{OxfordOlive}{RGB}{136,123,27}
+\definecolor{OxfordMidOlive}{RGB}{194,176,0}
+\definecolor{OxfordPastelOlive}{RGB}{225,222,174}
+\definecolor{OxfordTan}{RGB}{120,35,39}
+\definecolor{OxfordMidTan}{RGB}{225,163,88}
+\definecolor{OxfordPastelTan}{RGB}{241,227,187}
+
+\setbeamercolor{palette primary}{bg=OxfordBlue}
+\setbeamercolor{title}{fg=OxfordOlive}
+\setbeamercolor{subtitle}{fg=black}
+\setbeamercolor{structure}{fg=OxfordRed}
+\setbeamercolor{frametitle}{fg=OxfordOlive,bg=white}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\renewcommand{\emph}[1]{\textit{\color{OxfordRed}#1}}
+\newcommand{\reason}[1]{\quad{\color{OxfordMidBlue}\{\,\text{#1}\,\}}}
+\newcommand{\defeq}{\mathrel{\mathop:}=}
+\newcommand{\marker}[1]{\textbf{\color{OxfordBlue}#1.}~}
+
+\defbeamertemplate*{title page}{customised}[1][]
+{
+  \vskip16ex
+  \center
+  {\usebeamerfont{title}\color{OxfordBlue}\inserttitle}
+  \vskip2ex
+  \insertsubtitle
+  \vskip2ex
+  \insertdate
+  \vskip9ex
+  \insertauthor
+  \vskip1.5ex
+  {\fontsize{8pt}{0pt}\selectfont\insertinstitute}
+  \par
+}
+
+\mode<presentation>{%
+\setbeamertemplate{frametitle}
+{\vskip.15cm
+\hbox{\begin{beamercolorbox}[wd=\paperwidth,sep=.5cm]{frametitle}\usebeamerfont{frametitle}\insertframetitle\end{beamercolorbox}}\vskip-.45cm
+}}
+
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}{\hfill{\color[gray]{.4}\fontsize{8pt}{0pt}\selectfont\lectureno-\insertframenumber}\kern1.25em\vskip2.5ex}
+\setbeamertemplate{headline}{}
+
+\usepackage{enumitem}
+\setlistdepth{9}
+\setlist[itemize]{label={\color{OxfordRed}\raisebox{.15ex}{\vrule height .8ex width .8ex}},leftmargin=1.75em,topsep=0ex}
+
+\setbeamerfont{itemize/enumerate subbody}{}
+\setbeamerfont{itemize/enumerate subsubbody}{}
+
+\setlength{\jot}{0pt}
+\setlength\parskip{1.5ex minus .75ex}
+\setlength\abovedisplayskip{1ex minus .25ex}
+\setlength\belowdisplayskip{\abovedisplayskip}
+
+\newcommand{\abovedisplay}{\vskip-2.5ex}
+\newcommand{\belowdisplay}{\vskip-1ex}
+
+\setcounter{framenumber}{-1}
+

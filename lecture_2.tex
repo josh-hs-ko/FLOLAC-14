@@ -1,0 +1,149 @@
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[t,compress,hyperref={hidelinks}]{beamer}
+
+%include preamble.fmt
+
+\newcommand{\lectureno}{II}
+
+\begin{document}
+
+%include document.fmt
+
+\title{Type theory and logic}
+\subtitle{Lecture~\lectureno: dependent type theory}
+\date{2 July 2014}
+\author{{\fontspec[ExternalLocation=/Library/Fonts/]{DFHeiStd-W5}\href{http://www.cs.ox.ac.uk/people/hsiang-shang.ko/}{柯向上}}}
+\institute{\href{http://www.cs.ox.ac.uk/}{Department of Computer Science}\\ \href{http://www.ox.ac.uk/}{University of Oxford}\\ \href{mailto:Hsiang-Shang.Ko@@cs.ox.ac.uk}{Hsiang-Shang.Ko\char64 cs.ox.ac.uk}}
+
+{\usebackgroundtemplate{\includegraphics[width=\paperwidth]{banner.pdf}}
+\begin{frame}
+\titlepage
+\end{frame}}
+
+\begin{frame}{Indexed families of sets (predicates)}
+
+Common mathematical statements involve predicates and universal/existential quantification.
+
+For example: ``For all natural number |x : Nat|, if |x|~is not zero, then there exists |y : Nat| such that |x|~is equal to |1 + y|.''
+
+In type theory, a predicate on~|A| has type |A -> U| --- a \emph{family of sets} indexed by the domain~|A|.
+For example:
+\[ |ENTAILS \x BIND {-"\text{``if }"-} x {-"\text{\kern1pt is zero then }"-} BOT {-"\text{\kern1pt else }"-} TOP {-"\text{\kern-.1em''''}"-} : Nat -> U| \]
+
+(Note that the above treatment is in fact unfounded in our current theory. Why? (We will fix it on Thursday.))
+
+\end{frame}
+
+\begin{frame}{Dependent product types (universal quantification)}
+
+\begin{itemize}
+
+\item Formation:
+\[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS B : A -> U|}
+\rule{$\Pi$F}\BIC{|Gamma ENTAILS Pi' A B : U|} \DP \]
+\item Introduction:
+\[ \AXC{|Gamma, x : A ENTAILS t : B x|}
+\rule{$\Pi$I}\UIC{|Gamma ENTAILS \x BIND t : Pi' A B|} \DP \]
+\item Elimination:
+\[ \AXC{|Gamma ENTAILS f : Pi' A B|} \AXC{|Gamma ENTAILS a : A|}
+\rule{$\Pi$E}\BIC{|Gamma ENTAILS f a : B a|} \DP \]
+
+\end{itemize}
+
+\marker{Notation} We usually write |(Pi x A) B x| for |Pi' A B| (where `|(Pi x A)|\kern-1.5pt' is regarded as a quantifier).
+
+\marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|.
+Derive
+\[ |Gamma ENTAILS _ : ((Pi x A) (Pi y B) C x y) -> (Pi y B) (Pi x A) C x y| \]
+
+\end{frame}
+
+\begin{frame}{Dependent sum types (existential quantification)}
+
+\begin{itemize}
+
+\item Formation:
+\[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS B : A -> U|}
+\rule{$\Sigma$F}\BIC{|Gamma ENTAILS Sigma' A B : U|} \DP \]
+\item Introduction:
+\[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B a|}
+\rule{$\Sigma$I}\BIC{|Gamma ENTAILS (a, b) : Sigma' A B|} \DP \]
+\item Elimination:
+\[ \AXC{|Gamma ENTAILS p : Sigma' A B|}
+\rule{$\Sigma$EL}\UIC{|Gamma ENTAILS fst p : A|} \DP
+\quad
+\AXC{|Gamma ENTAILS p : Sigma' A B|}
+\rule{$\Sigma$ER}\UIC{|Gamma ENTAILS snd p : B (fst p)|} \DP \]
+
+\end{itemize}
+
+\marker{Notation} We usually write |(Sigma x A) B x| for |Sigma' A B|.
+
+\marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|.
+Derive the \emph{axiom of choice}:
+\[ \hskip-.5em |Gamma ENTAILS _ : ((Pi x A) (Sigma y B) C x y) -> (Sigma f (A -> B)) (Pi x A) C x (f x)| \]
+
+\end{frame}
+
+\begin{frame}{Computation}
+
+Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|.
+Try to derive
+\[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> ((Pi x A) B x -> C x)| \]
+\ldots\ and you should notice some problems.
+
+So far we have been concentrating on the \emph{statics} of type theory; here we need to invoke the \emph{dynamics} of the theory.
+
+\end{frame}
+
+\begin{frame}{Equality judgements and computation rules}
+
+We introduce a new kind of judgements stating that two terms should be regarded as the same during typechecking:
+\[ |Gamma ENTAILS t = u IN A| \]
+
+For each set, (when applicable) we specify additional \emph{computational rules} stating that eliminating an introductory term yields a component of the latter.
+For example, for product types we have two computation rules:
+\vskip-3ex
+\[ \kern-.75em
+\AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B|}
+\rule{$\times$CL}\insertBetweenHyps{\hskip.75em}\BIC{|Gamma ENTAILS fst (a , b) = a IN A|} \DP
+\quad
+\AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B|}
+\rule{$\times$CR}\insertBetweenHyps{\hskip.75em}\BIC{|Gamma ENTAILS snd (a , b) = b IN B|} \DP \]
+
+\end{frame}
+
+\begin{frame}{More computation rules}
+
+\[ \AXC{|Gamma, x : A ENTAILS t : B|} \AXC{|Gamma ENTAILS a : A|}
+\rule{$\to$C}\BIC{|Gamma ENTAILS (\x BIND t) a = t(subst a x) IN A -> B|} \DP \]
+
+
+\[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
+\rule{$+$CL}\TIC{|Gamma ENTAILS case (left a) f g = f a IN C|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS b : B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
+\rule{$+$CR}\TIC{|Gamma ENTAILS case (right b) f g = g b IN C|} \DP \]
+
+\end{frame}
+
+
+\begin{frame}{More computation rules}
+
+\[ \AXC{|Gamma, x : A ENTAILS t : B x|} \AXC{|Gamma ENTAILS a : A|}
+\rule{$\Pi$C}\BIC{|Gamma ENTAILS (\x BIND t) a = t(subst a x) IN B a|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B a|}
+\rule{$\Sigma$CL}\BIC{|Gamma ENTAILS fst (a , b) = a IN A|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B a|}
+\rule{$\Sigma$CR}\BIC{|Gamma ENTAILS snd (a , b) = b IN B a|} \DP \]
+
+\end{frame}
+
+\begin{frame}
+Predicates respect computation.
+\end{frame}
+
+\end{document}

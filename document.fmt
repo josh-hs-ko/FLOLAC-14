@@ -1,0 +1,4 @@
+\setlength{\jot}{0pt}
+\setlength\parskip{1.5ex minus .75ex}
+\setlength\abovedisplayskip{1ex minus .25ex}
+\setlength\belowdisplayskip{\abovedisplayskip}
