@@ -12,7 +12,7 @@
 
 \title{Type theory and logic}
 \subtitle{Lecture~\lectureno: Heyting arithmetic}
-\date{2 July 2014}
+\date{3 July 2014}
 \author{{\fontspec[ExternalLocation=/Library/Fonts/]{DFHeiStd-W5}\href{http://www.cs.ox.ac.uk/people/hsiang-shang.ko/}{柯向上}}}
 \institute{\href{http://www.cs.ox.ac.uk/}{Department of Computer Science}\\ \href{http://www.ox.ac.uk/}{University of Oxford}\\ \href{mailto:Hsiang-Shang.Ko@@cs.ox.ac.uk}{Hsiang-Shang.Ko\char64 cs.ox.ac.uk}}
 
@@ -25,8 +25,8 @@
 
 \begin{itemize}
 \item Formation:
-\[ \AXC{|Gamma ENTAILS A SET|} \AXC{|Gamma ENTAILS t : A|} \AXC{|Gamma ENTAILS u : A|}
-\rule{$\equiv$F}\TIC{|Gamma ENTAILS t (equiv A) u SET|} \DP \]
+\[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS t : A|} \AXC{|Gamma ENTAILS u : A|}
+\rule{$\equiv$F}\TIC{|Gamma ENTAILS t (equiv A) u : U|} \DP \]
 The subscript~|A|, i.e., the type of |t|~and~|u|, is often omitted.
 \item Introduction:
 \[ \AXC{|Gamma ENTAILS t : A|}
@@ -41,24 +41,25 @@ The subscript~|A|, i.e., the type of |t|~and~|u|, is often omitted.
 
 \[ \AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
-|Gamma, x : A, e : t EQUIV x ENTAILS P(sub (x SEP e)) SET| \\
-|Gamma ENTAILS p : P(sub (x SEP e))(Subst (t, refl) (x, e))| \\
+|Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
+|Gamma ENTAILS p : P t {-"\kern1pt"-} refl| \\
 |Gamma ENTAILS u : A| \\
 |Gamma ENTAILS q : t EQUIV u|
 \end{tabular}}
-\rule{$\equiv$E}\UIC{|Gamma ENTAILS J (x BIND e BIND P(sub (x SEP e))) p q : P(sub (x SEP e))(Subst (u, q) (x, e))|} \DP \]
+\rule{$\equiv$E}\UIC{|Gamma ENTAILS J p q : P u q|} \DP \]
 
-\marker{Exercise} Assuming |x : A ENTAILS P(sub x) SET|, prove |(Pi y A) x EQUIV y -> P(sub x) -> P(sub x)(subst y x)|.
+\marker{Exercise} Derive
+\[ |P : A -> U ENTAILS _ : (Pi x A) (Pi y A) x EQUIV y -> P x -> P y| \]
 
 \end{frame}
 
 \begin{frame}{Equality computation}
 \[\AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
-|Gamma, x : A, e : t EQUIV x ENTAILS P(sub (x SEP e)) SET| \\
-|Gamma ENTAILS p : P(sub (x SEP e))(Subst (t, refl) (x, e))|
+|Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
+|Gamma ENTAILS p : P t {-"\kern1pt"-} refl|
 \end{tabular}}
-\rule{$\equiv$C}\UIC{|Gamma ENTAILS J (x BIND e BIND P(sub (x SEP e))) p {-"\,"-} refl = p IN P(sub (x SEP e))(Subst (t, refl) (x, e))|} \DP \]
+\rule{$\equiv$C}\UIC{|Gamma ENTAILS J p {-"\kern1pt"-} refl = p IN P t {-"\kern1pt"-} refl|} \DP \]
 \end{frame}
 
 \end{document}

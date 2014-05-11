@@ -51,7 +51,7 @@ For example:
 
 \end{itemize}
 
-\marker{Notation} We usually write |(Pi x A) B x| for |Pi' A B| (where `|(Pi x A)|\kern-1.5pt' is regarded as a quantifier).
+\marker{Notation} We usually write |(Pi x A) B x| for |Pi' A B|, regarding `|(Pi x A)|\kern-1.5pt' as a quantifier.
 
 \marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|.
 Derive
@@ -93,7 +93,7 @@ Try to derive
 \[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> ((Pi x A) B x -> C x)| \]
 \ldots\ and you should notice some problems.
 
-So far we have been concentrating on the \emph{statics} of type theory; here we need to invoke the \emph{dynamics} of the theory.
+So far we have been concentrating on the \emph{statics} of type theory; here we need to formally invoke the \emph{dynamics} of the theory.
 
 \end{frame}
 
@@ -101,6 +101,7 @@ So far we have been concentrating on the \emph{statics} of type theory; here we 
 
 We introduce a new kind of judgements stating that two terms should be regarded as the same during typechecking:
 \[ |Gamma ENTAILS t = u IN A| \]
+for which we also have a well-formedness requirement that |A|~and everything appearing on the right of the colons in~|Gamma| are judged to be sets, and |t|~and~|u| are judged to be elements of~|A|.
 
 For each set, (when applicable) we specify additional \emph{computational rules} stating that eliminating an introductory term yields a component of the latter.
 For example, for product types we have two computation rules:
@@ -142,8 +143,130 @@ For example, for product types we have two computation rules:
 
 \end{frame}
 
+\begin{frame}{Equivalence rules}
+
+\[ \AXC{|Gamma ENTAILS t : A|}
+\rule{refl}\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS t = u IN A|}
+\rule{sym}\UIC{|Gamma ENTAILS u = t IN A|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS t = u IN A|} \AXC{|Gamma ENTAILS u = v IN A|}
+\rule{trans}\BIC{|Gamma ENTAILS t = v IN A|} \DP \]
+
+\end{frame}
+
+\begin{frame}{Congruence rules}
+
+We need a congruence rule for each constant we introduce:
+
+\[ \AXC{|Gamma ENTAILS a = a PRIME IN A|} \AXC{|Gamma ENTAILS b = b PRIME IN B|}
+\BIC{|Gamma ENTAILS (a, b) = (a PRIME, b PRIME) IN A TIMES B|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS p = p PRIME IN A TIMES B|}
+\UIC{|Gamma ENTAILS fst p = fst p PRIME IN A|} \DP
+\qquad
+\AXC{|Gamma ENTAILS p = p PRIME IN A TIMES B|}
+\UIC{|Gamma ENTAILS snd p = snd p PRIME IN B|} \DP \]
+
+\[ \AXC{|Gamma, x : A ENTAILS t = t PRIME IN B|}
+\UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN A -> B|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS f = f {-"\kern1pt"-} PRIME IN A|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
+\BIC{|Gamma ENTAILS f a = f {-"\kern1pt"-} PRIME a PRIME IN B|} \DP \]
+
+\ldots\ and similar rules for |left|, |right|, |case|, and |absurd|.
+
+\end{frame}
+
+\begin{frame}{Conversion rule}
+
+\[ \AXC{|Gamma ENTAILS t : A|}
+\AXC{|Gamma ENTAILS A = B IN U|}
+\rule{conv}\BIC{|Gamma ENTAILS t : B|} \DP \]
+
+\end{frame}
+
+\begin{frame}{More congruence rules}
+
+\[ \AXC{|Gamma ENTAILS a = a PRIME IN A|} \AXC{|Gamma ENTAILS b = b PRIME IN B a|}
+\BIC{|Gamma ENTAILS (a, b) = (a PRIME, b PRIME) IN Sigma' A B|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS p = p PRIME IN Sigma' A B|}
+\UIC{|Gamma ENTAILS fst p = fst p PRIME IN A|} \DP
+\quad
+\AXC{|Gamma ENTAILS p = p PRIME IN Sigma' A B|}
+\UIC{|Gamma ENTAILS snd p = snd p PRIME IN B (fst p)|} \DP \]
+
+\[ \AXC{|Gamma, x : A ENTAILS t = t PRIME IN B x|}
+\UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN Pi' A B|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN A|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
+\BIC{|Gamma ENTAILS f a = f SKIP PRIME a PRIME IN B a|} \DP \]
+
+\end{frame}
+
 \begin{frame}
-Predicates respect computation.
+\todo[inline]{Predicates respect computation.}
+\end{frame}
+
+\begin{frame}{Natural numbers}
+
+\begin{itemize}
+
+\item Formation:
+\[ \AXC{}
+\rule{|Nat|F}\UIC{|Gamma ENTAILS Nat : U|} \DP \]
+
+\item Introduction:
+\[ \AXC{}
+\rule{|Nat|IZ}\UIC{|Gamma ENTAILS zero : Nat|} \DP
+\qquad
+\AXC{|Gamma ENTAILS n : Nat|}
+\rule{|Nat|IS}\UIC{|Gamma ENTAILS suc n : Nat|} \DP \]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Natural numbers --- elimination rule}
+
+\begin{itemize}
+
+\item Elimination:
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS n : Nat|
+\end{tabular}}
+\rule{|Nat|E}\UIC{|Gamma ENTAILS ind P z s n : P n|} \DP \]
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Natural numbers --- computation rule}
+
+\begin{itemize}
+
+\item Computation:
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+\end{tabular}}
+\rule{|Nat|CZ}\UIC{|Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|} \DP \]
+
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS n : Nat|
+\end{tabular}}
+\rule{|Nat|CS}\UIC{|Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|} \DP \]
+
+\end{itemize}
+
 \end{frame}
 
 \end{document}

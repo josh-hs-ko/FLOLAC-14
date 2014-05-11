@@ -1,5 +1,7 @@
 %include agda.fmt
 
+\usepackage[color=yellow]{todonotes}
+
 \newcommand{\relation}[1]{\kern1.5pt\mathrel{#1}\kern1pt}
 \newcommand{\operator}[1]{\kern-2pt\mathop{#1}\kern-3pt}
 \newcommand{\constant}[1]{\texttt{#1}}
@@ -17,11 +19,12 @@
 %format (sub (t)) = "\mkern-\medmuskip_{" t "}"
 %format (subst (t) (x)) = "\![\kern.5pt" t "/" x "\kern1.225pt]"
 %format (Subst (t) (x)) = "\![\kern.5pt" t "\kern1pt/\kern1pt" x "\kern1.225pt]"
-%format SEP = "\mkern-2\thickmuskip\kern1.25pt"
+%format SKIP = "\mkern-\medmuskip\kern1pt"
+%format PRIME = "\mkern-\medmuskip^\prime"
 %format 0 = "\mathsf 0"
 %format 1 = "\mathsf 1"
 
-%format : = "\relation{:}\kern.5pt"
+%format : = "\relation{:}"
 %format :: = "\relation{::}"
 %format ENTAILS = "\relation{\vdash}\!"
 %format BIND = "\kern-2pt."
@@ -45,9 +48,9 @@
 %format absurd = "\constant{absurd}"
 %format NEG = "\neg\!"
 %format Pi' = "\Pi"
-%format (Pi x (t)) = "\Pi\kern1pt\text(" x ":\kern-.75pt" t "\text)\kern1.5pt"
+%format (Pi x (t)) = "\Pi\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1pt]\kern1.5pt"
 %format Sigma' = "\Sigma"
-%format (Sigma x (t)) = "\Sigma\kern1pt\text(" x ":\kern-.75pt" t "\text)\kern1.5pt"
+%format (Sigma x (t)) = "\Sigma\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1pt]\kern1.5pt"
 %format (equiv(t)) = "\kern-1.5pt\equiv_{" t "}\kern-2pt"
 %format EQUIV = "\kern-1.5pt\equiv\kern-2.75pt"
 %format refl = "\constant{refl}"
@@ -55,6 +58,9 @@
 %format J' = "J"
 
 %format Nat = "\mathbb N"
+%format zero = "\constant{zero}"
+%format suc = "\constant{suc}"
+%format ind = "\constant{ind}"
 %format Gamma = "\Gamma"
 
 %format YCOMB = "\constant{Y}\kern-1.5pt"

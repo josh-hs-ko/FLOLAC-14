@@ -153,6 +153,16 @@ In a typing judgement |Gamma|~|ENTAILS|~|t : S|, the context~|Gamma| can be empt
 
 \end{frame}
 
+\begin{frame}{Set of sets}
+We assume that there is a set of sets named~|U|, so when we write down, for example, |Gamma|~|ENTAILS|~|A : U|, this states that |A|~is a set under the assumptions in~|Gamma|.
+
+Whenever we write down a typing judgement, we require that the expressions appearing on the right of all the colons in the judgement are already judged to be sets.
+This requirement is called \emph{well-formedness}.
+
+\marker{Remark} This rough treatment is actually paradoxical; we'll circumvent the paradox on Thursday.
+
+\end{frame}
+
 \begin{frame}{Derivations}
 
 Judgements are justified by \emph{derivations}, which are constructed using a predetermined collection of \emph{deduction rules}.
@@ -183,8 +193,6 @@ which has a \emph{side condition} that |x : S| appears in~|Gamma|.
 Today, we give three kinds of rules for specifying each set:
 \begin{itemize}
 \item \emph{Formation rule} --- what constitute the name of the set.
-We assume that there is a set of sets named~|U|, so when we write down, for example, |Gamma|~|ENTAILS|~|A : U|, this states that |A|~is a set under the assumptions in~|Gamma|.
-(We will come back to~|U| on Thursday.)
 \item \emph{Introduction rule(s)} --- how to construct elements of the set.
 \item \emph{Elimination rule(s)} --- how to deconstruct elements of the set and transform them to elements of some other sets.
 \end{itemize}
@@ -272,8 +280,8 @@ This formalises the ``modus ponens'' rule in logic.
 \rule{$+$IR} \UIC{|Gamma ENTAILS right b : A PLUS B|} \DP \]
 
 \item Elimination:
-\[ \AXC{|Gamma ENTAILS q : A PLUS B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
-\rule{$+$E} \insertBetweenHyps{\hskip.7em} \TIC{|Gamma ENTAILS case q f g : C|} \DP \]
+\[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
+\rule{$+$E} \TIC{|Gamma ENTAILS case q f g : C|} \DP \]
 
 \end{itemize}
 
@@ -395,6 +403,12 @@ Per Martin-Löf: ``If programming is understood
 \end{itemize}
 \vspace*{-.5ex}
 then it no longer seems possible to distinguish the discipline of programming from constructive mathematics.''
+
+\end{frame}
+
+\begin{frame}{Todo's}
+
+\todo[inline]{immediate recognisability (canonical vs non-canonical elements)}
 
 \end{frame}
 
