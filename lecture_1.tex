@@ -159,7 +159,7 @@ We assume that there is a set of sets named~|U|, so when we write down, for exam
 Whenever we write down a typing judgement, we require that the expressions appearing on the right of all the colons in the judgement are already judged to be sets.
 This requirement is called \emph{well-formedness}.
 
-\marker{Remark} This rough treatment is actually paradoxical; we'll circumvent the paradox on Thursday.
+\marker{Remark} This rough treatment is actually paradoxical; we'll circumvent the paradox tomorrow.
 
 \end{frame}
 
@@ -281,7 +281,7 @@ This formalises the ``modus ponens'' rule in logic.
 
 \item Elimination:
 \[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
-\rule{$+$E} \TIC{|Gamma ENTAILS case q f g : C|} \DP \]
+\rule{$+$E} \insertBetweenHyps{\hskip.5em}\TIC{|Gamma ENTAILS case q f g : C|} \DP \]
 
 \end{itemize}
 

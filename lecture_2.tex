@@ -31,7 +31,7 @@ In type theory, a predicate on~|A| has type |A -> U| --- a \emph{family of sets}
 For example:
 \[ |ENTAILS \x BIND {-"\text{``if }"-} x {-"\text{\kern1pt is zero then }"-} BOT {-"\text{\kern1pt else }"-} TOP {-"\text{\kern-.1em''''}"-} : Nat -> U| \]
 
-(Note that the above treatment is in fact unfounded in our current theory. Why? (We will fix it on Thursday.))
+\marker{Remark} The above treatment is in fact unfounded in our current theory. Why?
 
 \end{frame}
 
@@ -80,9 +80,8 @@ Derive
 
 \marker{Notation} We usually write |(Sigma x A) B x| for |Sigma' A B|.
 
-\marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|.
-Derive the \emph{axiom of choice}:
-\[ \hskip-.5em |Gamma ENTAILS _ : ((Pi x A) (Sigma y B) C x y) -> (Sigma f (A -> B)) (Pi x A) C x (f x)| \]
+\marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|. Derive
+\[ |Gamma ENTAILS _ : ((Sigma p (A TIMES B)) C (fst p) (snd p)) -> (Sigma x A) (Sigma y B) C x y| \]
 
 \end{frame}
 
@@ -90,22 +89,28 @@ Derive the \emph{axiom of choice}:
 
 Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|.
 Try to derive
-\[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> ((Pi x A) B x -> C x)| \]
+\[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> (Pi x A) B x -> C x| \]
 \ldots\ and you should notice some problems.
 
 So far we have been concentrating on the \emph{statics} of type theory; here we need to formally invoke the \emph{dynamics} of the theory.
 
 \end{frame}
 
-\begin{frame}{Equality judgements and computation rules}
+\begin{frame}{Equality judgements}
 
 We introduce a new kind of judgements stating that two terms should be regarded as the same during typechecking:
 \[ |Gamma ENTAILS t = u IN A| \]
 for which we also have a well-formedness requirement that |A|~and everything appearing on the right of the colons in~|Gamma| are judged to be sets, and |t|~and~|u| are judged to be elements of~|A|.
 
-For each set, (when applicable) we specify additional \emph{computational rules} stating that eliminating an introductory term yields a component of the latter.
+\end{frame}
+
+\begin{frame}{Computation rules}
+
+For each set, (when applicable) we specify additional \emph{computation rules} stating that eliminating an introductory term yields a component of the latter.
+This is the type-theoretic formulation of \emph{Gentzen's inversion principle}.
+
 For example, for product types we have two computation rules:
-\vskip-3ex
+\abovedisplay
 \[ \kern-.75em
 \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B|}
 \rule{$\times$CL}\insertBetweenHyps{\hskip.75em}\BIC{|Gamma ENTAILS fst (a , b) = a IN A|} \DP
@@ -145,6 +150,8 @@ For example, for product types we have two computation rules:
 
 \begin{frame}{Equivalence rules}
 
+Judgemental equality is an equivalence relation.
+
 \[ \AXC{|Gamma ENTAILS t : A|}
 \rule{refl}\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
 
@@ -181,13 +188,21 @@ We need a congruence rule for each constant we introduce:
 
 \begin{frame}{Conversion rule}
 
+Once we establish that two sets are judgementally equal, we can transfer terms between the two sets.
+
 \[ \AXC{|Gamma ENTAILS t : A|}
 \AXC{|Gamma ENTAILS A = B IN U|}
 \rule{conv}\BIC{|Gamma ENTAILS t : B|} \DP \]
 
+\marker{Exercise} Finish deriving
+\[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> (Pi x A) B x -> C x| \]
+(where |Gamma DEFEQ A : U, B : A -> U, C : A -> U|).
+
 \end{frame}
 
 \begin{frame}{More congruence rules}
+
+We can state congruence rules for dependent products and sums only after we have the conversion rule. Why?
 
 \[ \AXC{|Gamma ENTAILS a = a PRIME IN A|} \AXC{|Gamma ENTAILS b = b PRIME IN B a|}
 \BIC{|Gamma ENTAILS (a, b) = (a PRIME, b PRIME) IN Sigma' A B|} \DP \]
@@ -206,64 +221,51 @@ We need a congruence rule for each constant we introduce:
 
 \end{frame}
 
-\begin{frame}
-\todo[inline]{Predicates respect computation.}
-\end{frame}
+\begin{frame}{Universes}
 
-\begin{frame}{Natural numbers}
+In our current theory, to form types like |A -> U| where |A : U|, we need to assume |U : U|.
+However, this assumption --- called \emph{impredicativity} --- was shown to lead to inconsistency by Jean-Yves Girard.
+(This result is commonly referred to as \emph{Girard's paradox}.)
 
+We thus need to introduce a \emph{predicative} hierarchy of universes |U(sub 0)|,~|U(sub 1)|, \ldots, up to infinity.
 \begin{itemize}
-
-\item Formation:
+\item Smaller universes are elements of larger universes.
 \[ \AXC{}
-\rule{|Nat|F}\UIC{|Gamma ENTAILS Nat : U|} \DP \]
-
-\item Introduction:
-\[ \AXC{}
-\rule{|Nat|IZ}\UIC{|Gamma ENTAILS zero : Nat|} \DP
-\qquad
-\AXC{|Gamma ENTAILS n : Nat|}
-\rule{|Nat|IS}\UIC{|Gamma ENTAILS suc n : Nat|} \DP \]
+\rule{|U|F}\UIC{|Gamma ENTAILS U(sub i) : U(sub (i+1))|} \DP \]
+\item Elements of smaller universes are also elements of larger universes. This is called \emph{cumulativity}.
+\[ \AX$\fCenter|Gamma ENTAILS A : U(sub i)|$
+\rule{cum}\UI$\fCenter|Gamma ENTAILS A : U(sub (i+1))|$ \DP \]
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Natural numbers --- elimination rule}
+\begin{frame}{Universe polymorphism}
 
-\begin{itemize}
+Formation rules and elimination rules have to be revised to work across the universe hierarchy.
 
-\item Elimination:
-\[ \AXC{\begin{tabular}{l}
-|Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-|Gamma ENTAILS n : Nat|
-\end{tabular}}
-\rule{|Nat|E}\UIC{|Gamma ENTAILS ind P z s n : P n|} \DP \]
+For example, the formation rule for coproducts becomes
+\[ \AXC{|Gamma ENTAILS A : U(sub i)|} \AXC{|Gamma ENTAILS B : U(sub j)|}
+\rule{$+$F}\BIC{|Gamma ENTAILS A PLUS B : U(sub (max i j))|} \DP \]
 
-\end{itemize}
+The elimination rule for coproducts is
+\[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
+\rule{$+$E} \insertBetweenHyps{\hskip.5em}\TIC{|Gamma ENTAILS case q f g : C|} \DP \]
+for which we implicitly assume the following judgements:
+\[ |Gamma ENTAILS A : U(sub i)| \qquad |Gamma ENTAILS B : U(sub j)| \qquad |Gamma ENTAILS C : U(sub k)| \]
+
+In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred by the Harper--Pollack algorithm.
 
 \end{frame}
 
-\begin{frame}{Natural numbers --- computation rule}
+\begin{frame}{Exercises}
 
 \begin{itemize}
-
-\item Computation:
-\[ \AXC{\begin{tabular}{l}
-|Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-\end{tabular}}
-\rule{|Nat|CZ}\UIC{|Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|} \DP \]
-
-\[ \AXC{\begin{tabular}{l}
-|Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-|Gamma ENTAILS n : Nat|
-\end{tabular}}
-\rule{|Nat|CS}\UIC{|Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|} \DP \]
+\item Let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
+Derive the \emph{axiom of choice}:
+\begin{align*}
+|Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
+& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
+\end{align*}
 
 \end{itemize}
 

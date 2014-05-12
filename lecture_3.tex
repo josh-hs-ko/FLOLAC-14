@@ -21,6 +21,66 @@
 \titlepage
 \end{frame}}
 
+
+\begin{frame}{Natural numbers}
+
+\begin{itemize}
+
+\item Formation:
+\[ \AXC{}
+\rule{|Nat|F}\UIC{|Gamma ENTAILS Nat : U|} \DP \]
+
+\item Introduction:
+\[ \AXC{}
+\rule{|Nat|IZ}\UIC{|Gamma ENTAILS zero : Nat|} \DP
+\qquad
+\AXC{|Gamma ENTAILS n : Nat|}
+\rule{|Nat|IS}\UIC{|Gamma ENTAILS suc n : Nat|} \DP \]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Natural numbers --- elimination rule}
+
+\begin{itemize}
+
+\item Elimination:
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS n : Nat|
+\end{tabular}}
+\rule{|Nat|E}\UIC{|Gamma ENTAILS ind P z s n : P n|} \DP \]
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Natural numbers --- computation rule}
+
+\begin{itemize}
+
+\item Computation:
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+\end{tabular}}
+\rule{|Nat|CZ}\UIC{|Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|} \DP \]
+
+\[ \AXC{\begin{tabular}{l}
+|Gamma ENTAILS P : Nat -> U| \\
+|Gamma ENTAILS z : P SKIP zero| \\
+|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS n : Nat|
+\end{tabular}}
+\rule{|Nat|CS}\UIC{|Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|} \DP \]
+
+\end{itemize}
+
+\end{frame}
+
 \begin{frame}{Equality types}
 
 \begin{itemize}
