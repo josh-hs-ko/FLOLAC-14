@@ -201,14 +201,14 @@ data Bool : Set where
   false : Bool
   true  : Bool
 
-Env : Set
-Env = V → Bool
+Assignment : Set
+Assignment = V → Bool
 
 test : (b : Bool) → Dec (b ≡ true)
 test false = no (λ ())
 test true  = yes refl
 
-⟦_⟧ : PROP → Env → Bool
+⟦_⟧ : PROP → Assignment → Bool
 ⟦ bot   ⟧ σ = false
 ⟦ var x ⟧ σ = σ x
 ⟦ p ⇒ q ⟧ σ with test (⟦ p ⟧ σ)
@@ -217,32 +217,32 @@ test true  = yes refl
 
 infix 3 _models_
 
-_models_ : Env → PROP → Set
-σ models φ = ⟦ φ ⟧ σ ≡ true
+_models_ : Assignment → PROP → Set
+σ models p = ⟦ p ⟧ σ ≡ true
 
 infix 2 _Models_
 
-data _Models_ (σ : Env) : Cxt → Set where
+data _Models_ (σ : Assignment) : Cxt → Set where
   nil  : σ Models []
-  cons : {φ : PROP} {Γ : Cxt} → σ models φ → σ Models Γ → σ Models φ ∷ Γ
+  cons : {p : PROP} {Γ : Cxt} → σ models p → σ Models Γ → σ Models p ∷ Γ
 
 _⊧_ : Cxt → PROP → Set
-Γ ⊧ φ = (σ : Env) → σ Models Γ → σ models φ
+Γ ⊧ p = (σ : Assignment) → σ Models Γ → σ models p
 
 infix 5 _!!_
 
-_!!_ : {σ : Env} {φ : PROP} {Γ : Cxt} → σ Models Γ → φ ∈ Γ → σ models φ
+_!!_ : {σ : Assignment} {p : PROP} {Γ : Cxt} → σ Models Γ → p ∈ Γ → σ models p
 cons m ms !! zero  = m
 cons m ms !! suc i = ms !! i
 
-soundness : {Γ : Cxt} {φ : PROP} → Γ ⊢ φ → Γ ⊧ φ
+soundness : {Γ : Cxt} {p : PROP} → Γ ⊢ p → Γ ⊧ p
 soundness (assum i           ) σ ms = ms !! i
-soundness (⇒I {Γ} {φ} t      ) σ ms with test (⟦ φ ⟧ σ)
-soundness (⇒I {Γ} {φ} t      ) σ ms | yes mφ = soundness t σ (cons mφ ms)
-soundness (⇒I {Γ} {φ} t      ) σ ms | no  _  = refl
-soundness (⇒E {Γ} {φ} {ψ} s t) σ ms with soundness s σ ms
-soundness (⇒E {Γ} {φ} {ψ} s t) σ ms | mψ with test (⟦ φ ⟧ σ)
-soundness (⇒E {Γ} {φ} {ψ} s t) σ ms | mψ | yes _   = mψ
-soundness (⇒E {Γ} {φ} {ψ} s t) σ ms | _  | no  ¬mφ = ⊥-elim (¬mφ (soundness t σ ms))
+soundness (⇒I {Γ} {p} t      ) σ ms with test (⟦ p ⟧ σ)
+soundness (⇒I {Γ} {p} t      ) σ ms | yes mp = soundness t σ (cons mp ms)
+soundness (⇒I {Γ} {p} t      ) σ ms | no  _  = refl
+soundness (⇒E {Γ} {p} {q} s t) σ ms with soundness s σ ms
+soundness (⇒E {Γ} {p} {q} s t) σ ms | mq with test (⟦ p ⟧ σ)
+soundness (⇒E {Γ} {p} {q} s t) σ ms | mq | yes _   = mq
+soundness (⇒E {Γ} {p} {q} s t) σ ms | _  | no  ¬mp = ⊥-elim (¬mp (soundness t σ ms))
 
--- completeness : {Γ : Cxt} {φ : PROP} → Γ ⊧ φ → Γ ⊢ φ
+-- completeness : {Γ : Cxt} {p : PROP} → Γ ⊧ p → Γ ⊢ p
