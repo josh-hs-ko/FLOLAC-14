@@ -224,7 +224,7 @@ infix 2 _Models_
 
 data _Models_ (σ : Assignment) : Cxt → Set where
   nil  : σ Models []
-  cons : {p : PROP} {Γ : Cxt} → σ models p → σ Models Γ → σ Models p ∷ Γ
+  cons : {p : PROP} {Γ : Cxt} → σ models p → σ Models Γ → σ Models (p ∷ Γ)
 
 _⊧_ : Cxt → PROP → Set
 Γ ⊧ p = (σ : Assignment) → σ Models Γ → σ models p

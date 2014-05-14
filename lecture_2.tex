@@ -221,6 +221,46 @@ We can state congruence rules for dependent products and sums only after we have
 
 \end{frame}
 
+\begin{frame}{Exercises}
+
+\begin{itemize}
+
+\item Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|. Derive
+\[ |Gamma ENTAILS _ : ((Pi x A) B x TIMES C x))<-> ((Pi x A) B x) TIMES ((Pi x A) C x)| \]
+and
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x PLUS C x) <-> ((Sigma x A) B x) PLUS ((Sigma x A) C x)| \]
+\vskip1ex
+What about
+\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS C x) <-> ((Pi x A) B x) PLUS ((Pi x A) C x)| \]
+and
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x TIMES C x) <-> ((Sigma x A) B x) TIMES ((Sigma x A) C x)| \]
+?
+
+\item Let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
+Derive the \emph{axiom of choice}:
+\begin{align*}
+|Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
+& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
+\end{align*}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{More non-derivable propositions}
+
+Let |Gamma DEFEQ A : U, B : A -> U|.
+We can derive
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x) -> NEG (Pi x A) NEG B x| \]
+but not
+\[ |Gamma ENTAILS _ : (NEG (Pi x A) NEG B x) -> (Sigma x A) B x| \]
+
+What about
+\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS NEG B x) -> (NEG (Pi x A) NEG B x) -> (Sigma x A) B x| \]
+?
+
+\end{frame}
+
 \begin{frame}{Universes}
 
 In our current theory, to form types like |A -> U| where |A : U|, we need to assume |U : U|.
@@ -243,31 +283,21 @@ We thus need to introduce a \emph{predicative} hierarchy of universes |U(sub 0)|
 
 Formation rules and elimination rules have to be revised to work across the universe hierarchy.
 
-For example, the formation rule for coproducts becomes
+\begin{itemize}
+
+\item For example, the formation rule for coproducts becomes
 \[ \AXC{|Gamma ENTAILS A : U(sub i)|} \AXC{|Gamma ENTAILS B : U(sub j)|}
 \rule{$+$F}\BIC{|Gamma ENTAILS A PLUS B : U(sub (max i j))|} \DP \]
 
-The elimination rule for coproducts is
+\item The elimination rule for coproducts is
 \[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
 \rule{$+$E} \insertBetweenHyps{\hskip.5em}\TIC{|Gamma ENTAILS case q f g : C|} \DP \]
 for which we implicitly assume the following judgements:
 \[ |Gamma ENTAILS A : U(sub i)| \qquad |Gamma ENTAILS B : U(sub j)| \qquad |Gamma ENTAILS C : U(sub k)| \]
 
-In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred by the Harper--Pollack algorithm.
-
-\end{frame}
-
-\begin{frame}{Exercises}
-
-\begin{itemize}
-\item Let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
-Derive the \emph{axiom of choice}:
-\begin{align*}
-|Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
-& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
-\end{align*}
-
 \end{itemize}
+
+In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred most of the time.
 
 \end{frame}
 

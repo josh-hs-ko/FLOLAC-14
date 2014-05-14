@@ -53,11 +53,13 @@
 \end{tabular}}
 \rule{|Nat|E}\UIC{|Gamma ENTAILS ind P z s n : P n|} \DP \]
 
+Logically this is the \emph{induction principle}; computationally this is \emph{primitive recursion}.
+
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Natural numbers --- computation rule}
+\begin{frame}{Natural numbers --- computation rules}
 
 \begin{itemize}
 
@@ -97,29 +99,42 @@ The subscript~|A|, i.e., the type of |t|~and~|u|, is often omitted.
 
 \end{frame}
 
-\begin{frame}{Equality elimination}
+\begin{frame}{Equality types --- elimination rule}
 
+\begin{itemize}
+
+\item Elimination:
 \[ \AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
 |Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
-|Gamma ENTAILS p : P t {-"\kern1pt"-} refl| \\
+|Gamma ENTAILS p : P t SKIP refl| \\
 |Gamma ENTAILS u : A| \\
 |Gamma ENTAILS q : t EQUIV u|
 \end{tabular}}
-\rule{$\equiv$E}\UIC{|Gamma ENTAILS J p q : P u q|} \DP \]
+\rule{$\equiv$E}\UIC{|Gamma ENTAILS J P p q : P u q|} \DP \]
+
+\end{itemize}
+
 
 \marker{Exercise} Derive
 \[ |P : A -> U ENTAILS _ : (Pi x A) (Pi y A) x EQUIV y -> P x -> P y| \]
 
 \end{frame}
 
-\begin{frame}{Equality computation}
+\begin{frame}{Equality types --- computation rule}
+
+\begin{itemize}
+
+\item Computation:
 \[\AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
 |Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
 |Gamma ENTAILS p : P t {-"\kern1pt"-} refl|
 \end{tabular}}
-\rule{$\equiv$C}\UIC{|Gamma ENTAILS J p {-"\kern1pt"-} refl = p IN P t {-"\kern1pt"-} refl|} \DP \]
+\rule{$\equiv$C}\UIC{|Gamma ENTAILS J P p SKIP refl = p IN P t SKIP refl|} \DP \]
+
+\end{itemize}
+
 \end{frame}
 
 \end{document}

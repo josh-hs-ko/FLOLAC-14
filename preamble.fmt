@@ -13,6 +13,7 @@
 %format ) = "\text)"
 %format , = "\text{\,,~}"
 %format -> = "\relation{\to}"
+%format <-> = "\relation{\leftrightarrow}"
 %format \ = "\lambda\kern1pt"
 %format (highlight(x)) = "{\color{red}" x "}"
 %format (dehighlight(x)) = "{\color[gray]{.9}" x "}"
@@ -151,7 +152,7 @@
 
 \setlength{\jot}{0pt}
 \setlength\parskip{1.5ex minus .75ex}
-\setlength\abovedisplayskip{1ex minus .25ex}
+\setlength\abovedisplayskip{1ex minus .5ex}
 \setlength\belowdisplayskip{\abovedisplayskip}
 
 \newcommand{\abovedisplay}{\vskip-2.5ex}

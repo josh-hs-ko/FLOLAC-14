@@ -157,9 +157,8 @@ In a typing judgement |Gamma|~|ENTAILS|~|t : S|, the context~|Gamma| can be empt
 We assume that there is a set of sets named~|U|, so when we write down, for example, |Gamma|~|ENTAILS|~|A : U|, this states that |A|~is a set under the assumptions in~|Gamma|.
 
 Whenever we write down a typing judgement, we require that the expressions appearing on the right of all the colons in the judgement are already judged to be sets.
-This requirement is called \emph{well-formedness}.
 
-\marker{Remark} This rough treatment is actually paradoxical; we'll circumvent the paradox tomorrow.
+\marker{Remark} This rough treatment is actually paradoxical; we'll resolve the paradox tomorrow.
 
 \end{frame}
 
@@ -344,8 +343,6 @@ For an extreme example, the truth of the following proposition is determined by 
 \[ \text{\textbf{\color{red}if} \textit{herba viridi} \textbf{\color{red}and} \textit{area est infectum}, \textbf{\color{red}then} \textit{area est infectum}} \]
 The actual meanings/structures of the two propositions ``\textit{herba viridi}'' and ``\textit{area est infectum}'' do not matter.
 
-\marker{Definition} In simple type theory, a proposition~|P| is called a \emph{theorem} exactly when we have a derivation of |ENTAILS|~|p : P| for some term~|p|.
-
 \end{frame}
 
 \begin{frame}{Consistency}
@@ -358,12 +355,12 @@ The type system of Haskell is inconsistent, and hence inadequate as a (tradition
 
 \end{frame}
 
-\begin{frame}{Theorems and non-theorems}
+\begin{frame}{Non-derivable propositions}
 
-For arbitrary sets |P|~and~|Q|:
+Assuming |P : U| and |Q : U|:
 \begin{center}
 \begin{tabular}{ll}
-Theorems & Non-theorems \\ \hline \\[-2ex]
+We can derive & but not \\ \hline \\[-2ex]
 |NEG NEG (P + NEG P)| & |P + NEG P| \\
 & (\emph{law of excluded middle}) \\
 |P -> NEG NEG P| & |NEG NEG P -> P| \\
