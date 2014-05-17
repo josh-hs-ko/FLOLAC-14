@@ -25,7 +25,7 @@
 
 Common mathematical statements involve predicates and universal/existential quantification.
 
-For example: ``For all natural number |x : Nat|, if |x|~is not zero, then there exists |y : Nat| such that |x|~is equal to |1 + y|.''
+For example: ``For every |x : Nat|, if |x|~is not zero, then there exists |y : Nat| such that |x|~is equal to |1 + y|.''
 
 In type theory, a predicate on~|A| has type |A -> U| --- a \emph{family of sets} indexed by the domain~|A|.
 For example:
@@ -221,6 +221,14 @@ We can state congruence rules for dependent products and sums only after we have
 
 \end{frame}
 
+\begin{frame}{Canonical vs non-canonical elements}
+
+\end{frame}
+
+\begin{frame}{Decidability of judgemental equality}
+
+\end{frame}
+
 \begin{frame}{Exercises}
 
 \begin{itemize}
@@ -251,9 +259,9 @@ Derive the \emph{axiom of choice}:
 
 Let |Gamma DEFEQ A : U, B : A -> U|.
 We can derive
-\[ |Gamma ENTAILS _ : ((Sigma x A) B x) -> NEG (Pi x A) NEG B x| \]
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x) -> (NEG (Pi x A) NEG B x)| \]
 but not
-\[ |Gamma ENTAILS _ : (NEG (Pi x A) NEG B x) -> (Sigma x A) B x| \]
+\[ |Gamma ENTAILS _ : (NEG (Pi x A) NEG B x) -> ((Sigma x A) B x)| \]
 
 What about
 \[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS NEG B x) -> (NEG (Pi x A) NEG B x) -> (Sigma x A) B x| \]

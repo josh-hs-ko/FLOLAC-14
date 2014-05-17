@@ -83,33 +83,32 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 
 \end{frame}
 
-\begin{frame}{Equality types}
+\begin{frame}{Identity types}
 
 \begin{itemize}
 \item Formation:
 \[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS t : A|} \AXC{|Gamma ENTAILS u : A|}
-\rule{$\equiv$F}\TIC{|Gamma ENTAILS t (equiv A) u : U|} \DP \]
-The subscript~|A|, i.e., the type of |t|~and~|u|, is often omitted.
+\rule{$\equiv$F}\TIC{|Gamma ENTAILS Id A t u : U|} \DP \]
 \item Introduction:
 \[ \AXC{|Gamma ENTAILS t : A|}
-\rule{$\equiv$I}\UIC{|Gamma ENTAILS refl : t EQUIV t|} \DP \]
+\rule{$\equiv$I}\UIC{|Gamma ENTAILS refl : Id A t t|} \DP \]
 \end{itemize}
 
-\marker{Exercise} Assume |Gamma ENTAILS t = u IN A| and derive \rlap{|Gamma ENTAILS refl : t EQUIV u|.}
+\marker{Exercise} Assume |Gamma ENTAILS t = u IN A| and derive \rlap{|Gamma ENTAILS refl : Id A t u|.}
 
 \end{frame}
 
-\begin{frame}{Equality types --- elimination rule}
+\begin{frame}{Identity types --- elimination rule}
 
 \begin{itemize}
 
 \item Elimination:
 \[ \AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
-|Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
+|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
 |Gamma ENTAILS p : P t SKIP refl| \\
 |Gamma ENTAILS u : A| \\
-|Gamma ENTAILS q : t EQUIV u|
+|Gamma ENTAILS q : Id A t u|
 \end{tabular}}
 \rule{$\equiv$E}\UIC{|Gamma ENTAILS J P p q : P u q|} \DP \]
 
@@ -117,19 +116,19 @@ The subscript~|A|, i.e., the type of |t|~and~|u|, is often omitted.
 
 
 \marker{Exercise} Derive
-\[ |P : A -> U ENTAILS _ : (Pi x A) (Pi y A) x EQUIV y -> P x -> P y| \]
+\[ |P : A -> U ENTAILS _ : (Pi x A) (Pi y A) Id A x y -> P x -> P y| \]
 
 \end{frame}
 
-\begin{frame}{Equality types --- computation rule}
+\begin{frame}{Identity types --- computation rule}
 
 \begin{itemize}
 
 \item Computation:
 \[\AXC{\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
-|Gamma ENTAILS P : (Pi x A) t EQUIV x -> U| \\
-|Gamma ENTAILS p : P t {-"\kern1pt"-} refl|
+|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
+|Gamma ENTAILS p : P t SKIP refl|
 \end{tabular}}
 \rule{$\equiv$C}\UIC{|Gamma ENTAILS J P p SKIP refl = p IN P t SKIP refl|} \DP \]
 

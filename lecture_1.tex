@@ -158,7 +158,7 @@ We assume that there is a set of sets named~|U|, so when we write down, for exam
 
 Whenever we write down a typing judgement, we require that the expressions appearing on the right of all the colons in the judgement are already judged to be sets.
 
-\marker{Remark} This rough treatment is actually paradoxical; we'll resolve the paradox tomorrow.
+\marker{Remark} This rough treatment is actually paradoxical; we will resolve the paradox tomorrow.
 
 \end{frame}
 
@@ -192,7 +192,7 @@ which has a \emph{side condition} that |x : S| appears in~|Gamma|.
 Today, we give three kinds of rules for specifying each set:
 \begin{itemize}
 \item \emph{Formation rule} --- what constitute the name of the set.
-\item \emph{Introduction rule(s)} --- how to construct elements of the set.
+\item \emph{Introduction rule(s)} --- how to construct \emph{canonical} elements of the set.
 \item \emph{Elimination rule(s)} --- how to deconstruct elements of the set and transform them to elements of some other sets.
 \end{itemize}
 
@@ -335,7 +335,7 @@ The fragment of type theory consisting of these sets is called \emph{simple type
 
 \end{frame}
 
-\begin{frame}{Simple type theory}
+\begin{frame}{Propositional connectives}
 
 We study simple type theory (in isolation) because we are interested in understanding the role of propositional set formers (connectives) when they are used to combine propositions into more complex ones.
 
@@ -347,7 +347,7 @@ The actual meanings/structures of the two propositions ``\textit{herba viridi}''
 
 \begin{frame}{Consistency}
 
-As a logic system, simple type theory is \emph{consistent}, meaning that not all propositions are theorems.
+As a logic system, simple type theory is \emph{consistent}, meaning that not all propositions are provable.
 
 Consistency is a basic requirement of any (traditional) mathematical logic: if a logic is \emph{inconsistent}, meaning that every proposition is provable, then we might as well throw the logic away and simply declare everything to be true.
 
@@ -355,18 +355,18 @@ The type system of Haskell is inconsistent, and hence inadequate as a (tradition
 
 \end{frame}
 
-\begin{frame}{Non-derivable propositions}
+\begin{frame}{Non-provable propositions}
 
-Assuming |P : U| and |Q : U|:
+Assuming |A : U| and |B : U|:
 \begin{center}
 \begin{tabular}{ll}
-We can derive & but not \\ \hline \\[-2ex]
-|NEG NEG (P + NEG P)| & |P + NEG P| \\
+We can prove & but not \\ \hline \\[-2ex]
+|NEG NEG (A + NEG A)| & |A + NEG A| \\
 & (\emph{law of excluded middle}) \\
-|P -> NEG NEG P| & |NEG NEG P -> P| \\
+|A -> NEG NEG A| & |NEG NEG A -> A| \\
 & (\emph{principle of indirect proof}\,) \\
-|NEG P + NEG Q -> NEG (P TIMES Q)| & |NEG (P TIMES Q) -> NEG P + NEG Q| \\
-|(P -> Q) -> (NEG Q -> NEG P)| & |(NEG Q -> NEG P) -> (P -> Q)|
+|NEG A + NEG B -> NEG (A TIMES B)| & |NEG (A TIMES B) -> NEG A + NEG B| \\
+|(A -> B) -> (NEG B -> NEG A)| & |(NEG B -> NEG A) -> (A -> B)|
 \end{tabular}
 \end{center}
 
@@ -382,30 +382,65 @@ What's ``wrong'' with the type-theoretic logic?
 \emph{Intuitionism} was founded by L.E.J.~Brouwer~(1881--1966), which holds the position that mathematical objects are \emph{mental constructions}, rather than existing in an ideal world, independent from human mind.
 The latter is the position of \emph{classical mathematics}.
 
+\end{frame}
 
+\begin{frame}{Computability}
+
+Alan~M. Turing. On computable numbers, with an application to the Entscheidungsproblem. 1937.
+
+\begin{quote}
+\normalfont
+\begin{itemize}
+\item\relax [\ldots] the justification [of the definitions] lies in the fact that the human memory is necessarily limited.
+\vspace*{1ex}
+\item We may compare a man in the process of computing a real number to a machine [\ldots]
+\vspace*{1ex}
+\item\relax [On number of symbols\ldots] We cannot tell at a glance whether 9999999999999999 and 999999999999999 are the same.
+\vspace*{1ex}
+\item\relax [On number of states\ldots] If we admitted an infinity of states of mind, some of them will be ``arbitrarily close'' and will be confused.
+\end{itemize}
+\end{quote}
 
 \end{frame}
 
-\begin{frame}{Intuitionism}
+\begin{frame}{Unification of mathematics and programming}
 
-Per Martin-Löf: ``If programming is understood
-\vspace*{-.5ex}
+Per Martin-Löf. Constructive mathematics and computer programming. 1984.
+
+\begin{quote}
+\normalfont
+If programming is understood
+\vspace*{1ex}
 \begin{itemize}
 \item not as the writing of instructions for this or that computing machine
+\vspace*{1ex}
 \item but as the design of methods of computation that it is the computer's duty to execute
 \vspace*{1ex}
 \begin{itemize}
 \item (a difference that Dijkstra has referred to as the difference between comput\textbf{er} science and comput\textbf{ing} science),
 \end{itemize}
 \end{itemize}
-\vspace*{-.5ex}
-then it no longer seems possible to distinguish the discipline of programming from constructive mathematics.''
+\vspace*{1ex}
+then it no longer seems possible to distinguish the discipline of programming from constructive mathematics.
+\end{quote}
 
 \end{frame}
 
-\begin{frame}{Todo's}
+\begin{frame}{Some more exercises}
 
-\todo[inline]{immediate recognisability (canonical vs non-canonical elements)}
+Assuming |A : U|, |B : U|, and |C : U|, prove
+
+\begin{itemize}
+
+\item |(A -> B -> C) -> (A -> B) -> A -> C|
+
+\item |(A + B) + C -> A + (B + C)|
+
+\item |NEG (A PLUS B) <-> NEG A TIMES NEG B|
+
+\item |A PLUS (B TIMES C) <-> (A PLUS B) TIMES (A PLUS C)|
+
+\end{itemize}
 
 \end{frame}
 
