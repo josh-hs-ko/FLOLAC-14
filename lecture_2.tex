@@ -85,6 +85,65 @@ Derive
 
 \end{frame}
 
+\begin{frame}{Exercises}
+
+Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|. Derive
+\[ |Gamma ENTAILS _ : ((Pi x A) B x TIMES C x) <-> ((Pi x A) B x) TIMES ((Pi x A) C x)| \]
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x PLUS C x) <-> ((Sigma x A) B x) PLUS ((Sigma x A) C x)| \]
+What about
+\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS C x) <-> ((Pi x A) B x) PLUS ((Pi x A) C x)| \]
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x TIMES C x) <-> ((Sigma x A) B x) TIMES ((Sigma x A) C x)| \]
+?
+
+Now let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
+Derive the \emph{axiom of choice}:
+\begin{align*}
+|Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
+& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Universes}
+
+In our current theory, to form types like |A -> U| where |A : U|, we need to assume |U : U|.
+However, this assumption --- called \emph{impredicativity} --- was shown to lead to inconsistency by Jean-Yves Girard.
+(This result is commonly referred to as \emph{Girard's paradox}.)
+
+We thus need to introduce a \emph{predicative} hierarchy of universes |U(sub 0)|,~|U(sub 1)|, \ldots, up to infinity.
+\begin{itemize}
+\item Smaller universes are elements of larger universes.
+\[ \AXC{}
+\rule{|U|F}\UIC{|Gamma ENTAILS U(sub i) : U(sub (i+1))|} \DP \]
+\item Elements of smaller universes are also elements of larger universes. This is called \emph{cumulativity}.
+\[ \AX$\fCenter|Gamma ENTAILS A : U(sub i)|$
+\rule{cum}\UI$\fCenter|Gamma ENTAILS A : U(sub (i+1))|$ \DP \]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Universe polymorphism}
+
+Formation rules and elimination rules have to be revised to work across the universe hierarchy.
+
+\begin{itemize}
+
+\item For example, the formation rule for coproducts becomes
+\[ \AXC{|Gamma ENTAILS A : U(sub i)|} \AXC{|Gamma ENTAILS B : U(sub j)|}
+\rule{$+$F}\BIC{|Gamma ENTAILS A PLUS B : U(sub (max i j))|} \DP \]
+
+\item The elimination rule for coproducts is
+\[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
+\rule{$+$E} \insertBetweenHyps{\hskip.5em}\TIC{|Gamma ENTAILS case q f g : C|} \DP \]
+for which we implicitly assume the following judgements:
+\[ |Gamma ENTAILS A : U(sub i)| \qquad |Gamma ENTAILS B : U(sub j)| \qquad |Gamma ENTAILS C : U(sub k)| \]
+
+\end{itemize}
+
+In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred most of the time.
+
+\end{frame}
+
 \begin{frame}{Computation}
 
 Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|.
@@ -107,7 +166,7 @@ for which we also have a well-formedness requirement that |A|~and everything app
 \begin{frame}{Computation rules}
 
 For each set, (when applicable) we specify additional \emph{computation rules} stating that eliminating an introductory term yields a component of the latter.
-This is the type-theoretic formulation of \emph{Gentzen's inversion principle}.
+This is the type-theoretic manifestation of \emph{Gentzen's inversion principle}.
 
 For example, for product types we have two computation rules:
 \abovedisplay
@@ -221,41 +280,29 @@ We can state congruence rules for dependent products and sums only after we have
 
 \end{frame}
 
-\begin{frame}{Canonical vs non-canonical elements}
-
-\end{frame}
-
 \begin{frame}{Decidability of judgemental equality}
 
-\end{frame}
+Our judgemental equality is \emph{decidable}: for any equality judgement we can decide whether it has a derivation or not.
 
-\begin{frame}{Exercises}
+Decidability is achieved by \emph{reducing} terms to their \emph{normal forms} and see if the normal forms match.
 
-\begin{itemize}
+Next week's \emph{operational semantics} will discuss term reduction in detail, where we will see various \emph{reduction strategies}.
 
-\item Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|. Derive
-\[ |Gamma ENTAILS _ : ((Pi x A) B x TIMES C x))<-> ((Pi x A) B x) TIMES ((Pi x A) C x)| \]
-and
-\[ |Gamma ENTAILS _ : ((Sigma x A) B x PLUS C x) <-> ((Sigma x A) B x) PLUS ((Sigma x A) C x)| \]
-\vskip1ex
-What about
-\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS C x) <-> ((Pi x A) B x) PLUS ((Pi x A) C x)| \]
-and
-\[ |Gamma ENTAILS _ : ((Sigma x A) B x TIMES C x) <-> ((Sigma x A) B x) TIMES ((Sigma x A) C x)| \]
-?
-
-\item Let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
-Derive the \emph{axiom of choice}:
-\begin{align*}
-|Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
-& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
-\end{align*}
-
-\end{itemize}
+Judgemental equality is formulated without reference to any particular reduction strategy --- it captures the notion of computation only abstractly.
 
 \end{frame}
 
-\begin{frame}{More non-derivable propositions}
+\begin{frame}{Canonical vs non-canonical elements}
+
+Introduction rules specify \emph{canonical} --- or \emph{immediately recognisable} --- elements of a set.
+
+A complex construction may not be immediately recognisable as belonging to a set, but as long as we can see that it \emph{computes} to a canonical element, we accept it as a \emph{non-canonical} element of the set.
+
+\varmarker{Property}{canonicity} If |ENTAILS t : A|, then |ENTAILS t = c IN A| for some canonical element~|c|.
+
+\end{frame}
+
+\begin{frame}{Non-derivable proposition}
 
 Let |Gamma DEFEQ A : U, B : A -> U|.
 We can derive
@@ -263,49 +310,37 @@ We can derive
 but not
 \[ |Gamma ENTAILS _ : (NEG (Pi x A) NEG B x) -> ((Sigma x A) B x)| \]
 
-What about
-\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS NEG B x) -> (NEG (Pi x A) NEG B x) -> (Sigma x A) B x| \]
-?
+\marker{Exercise}
+Assuming that there is an additional rule
+\abovedisplay
+\[ \AXC{|Gamma ENTAILS X : U|}
+\rule{LEM}\UIC{|Gamma ENTAILS LEM X : X + NEG X|} \DP \]
+derive
+\[ |Gamma ENTAILS _ : (NEG (Pi x A) NEG B x) -> ((Sigma x A) B x)| \]
+\end{frame}
+
+\begin{frame}{Classical logic as an extension of intuitionistic logic}
+
+By including the LEM rule, our logic system can now derive intuitionistically invalid but classically valid propositions.
+
+The LEM rule breaks canonicity, however (why?) --- the system is no longer computationally meaningful.
+
+We are actually abusing the intuitionistic system to state classical facts, though.
 
 \end{frame}
 
-\begin{frame}{Universes}
-
-In our current theory, to form types like |A -> U| where |A : U|, we need to assume |U : U|.
-However, this assumption --- called \emph{impredicativity} --- was shown to lead to inconsistency by Jean-Yves Girard.
-(This result is commonly referred to as \emph{Girard's paradox}.)
-
-We thus need to introduce a \emph{predicative} hierarchy of universes |U(sub 0)|,~|U(sub 1)|, \ldots, up to infinity.
+\begin{frame}{Classical logic as a sub-system of intuitionistic logic}
+The \emph{Gödel--Gentzen negative translation} embeds classical logic into intuitionistic logic by
 \begin{itemize}
-\item Smaller universes are elements of larger universes.
-\[ \AXC{}
-\rule{|U|F}\UIC{|Gamma ENTAILS U(sub i) : U(sub (i+1))|} \DP \]
-\item Elements of smaller universes are also elements of larger universes. This is called \emph{cumulativity}.
-\[ \AX$\fCenter|Gamma ENTAILS A : U(sub i)|$
-\rule{cum}\UI$\fCenter|Gamma ENTAILS A : U(sub (i+1))|$ \DP \]
+\item putting double negation in front of ``atomic propositions'',
+\item replacing `|(Sigma x A) {-"\text\ldots"-}|' with `|NEG (Pi x A) NEG {-"\kern3pt\text\ldots"-}|', and
+\item replacing `|{-"\text\ldots\kern1pt"-} PLUS {-"\kern2pt\text\ldots"-}|' with `|NEG (NEG {-"\text\ldots\kern1pt"-} TIMES NEG {-"\kern3pt\text\ldots"-})|'.
 \end{itemize}
 
-\end{frame}
-
-\begin{frame}{Universe polymorphism}
-
-Formation rules and elimination rules have to be revised to work across the universe hierarchy.
-
-\begin{itemize}
-
-\item For example, the formation rule for coproducts becomes
-\[ \AXC{|Gamma ENTAILS A : U(sub i)|} \AXC{|Gamma ENTAILS B : U(sub j)|}
-\rule{$+$F}\BIC{|Gamma ENTAILS A PLUS B : U(sub (max i j))|} \DP \]
-
-\item The elimination rule for coproducts is
-\[ \AXC{|Gamma ENTAILS q : A + B|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
-\rule{$+$E} \insertBetweenHyps{\hskip.5em}\TIC{|Gamma ENTAILS case q f g : C|} \DP \]
-for which we implicitly assume the following judgements:
-\[ |Gamma ENTAILS A : U(sub i)| \qquad |Gamma ENTAILS B : U(sub j)| \qquad |Gamma ENTAILS C : U(sub k)| \]
-
-\end{itemize}
-
-In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred most of the time.
+\marker{Exercise} Let |Gamma DEFEQ A : U, a : A, D : A -> U|. (Note that |A|~is an inhabited set.) Derive
+\[ |Gamma ENTAILS _ : NEG (Pi x A) NEG (NEG NEG D x -> (Pi y A) NEG NEG D y)| \]
+which is the Gödel--Gentzen negative translation of
+\[ \exists\kern1pt[\kern1pt x : A \kern1.25pt]\kern1.5pt\; D\;x \relation{\to} \forall\kern1pt[\kern1pt y : A \kern1.25pt]\kern1.5pt\; D\;y \]
 
 \end{frame}
 

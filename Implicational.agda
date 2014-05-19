@@ -1,4 +1,4 @@
-module FLOLAC14 (V : Set) where
+module Implicational (V : Set) where
 
 open import Data.Empty
 open import Data.Product

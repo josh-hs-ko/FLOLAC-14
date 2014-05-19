@@ -52,6 +52,7 @@
 %format (Pi x (t)) = "\Pi\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1.25pt]\kern1.5pt"
 %format Sigma' = "\Sigma"
 %format (Sigma x (t)) = "\Sigma\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1.25pt]\kern1.5pt"
+%format LEM = "\constant{LEM}"
 %format Id = "\constant{Id}"
 %format refl = "\constant{refl}"
 %format J = "\constant{J}"
@@ -115,6 +116,7 @@
 \newcommand{\reason}[1]{\quad{\color{OxfordMidBlue}\{\,\text{#1}\,\}}}
 \newcommand{\defeq}{\mathrel{\mathop:}=}
 \newcommand{\marker}[1]{\textbf{\color{OxfordBlue}#1.}~}
+\newcommand{\varmarker}[2]{{\color{OxfordBlue}\textbf{#1} (#2)\textbf.}~}
 
 \defbeamertemplate*{title page}{customised}[1][]
 {
