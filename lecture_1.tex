@@ -177,10 +177,10 @@ which says that the judgement~|J'|, called the \emph{conclusion} of the rule, ca
 
 A rule can have zero premises, meaning that its conclusion is self-evident.
 
-For example, there is an \emph{assumption rule}
+For example, there is a \emph{variable rule}
 \abovedisplay
 \[ \AXC{}
-\rule{assum}\UIC{|Gamma ENTAILS x : S|}
+\rule{var}\UIC{|Gamma ENTAILS x : S|}
 \DP \]
 \belowdisplay
 which has a \emph{side condition} that |x : S| appears in~|Gamma|.
@@ -228,10 +228,10 @@ Today, we give three kinds of rules for specifying each set:
 Give a derivation of |Gamma ENTAILS _ : B TIMES A|.
 \abovedisplay
 \[ \AXC{}
-\rule{assum}\UIC{|Gamma ENTAILS p : A TIMES B|}
+\rule{var}\UIC{|Gamma ENTAILS p : A TIMES B|}
 \rule{$\times$ER}\UIC{|Gamma ENTAILS snd p : B|}
 \AXC{}
-\rule{assum}\UIC{|Gamma ENTAILS p : A TIMES B|}
+\rule{var}\UIC{|Gamma ENTAILS p : A TIMES B|}
 \rule{$\times$EL}\UIC{|Gamma ENTAILS fst p : A|}
 \rule{$\times$I}\BIC{|Gamma ENTAILS (snd p, fst p) : B TIMES A|}
 \DP \]

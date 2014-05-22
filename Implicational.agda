@@ -16,7 +16,6 @@ open import Relation.Binary.HeterogeneousEquality using () renaming (_≅_ to _�
 infixr 5 _⇒_
 
 data PROP : Set where
-  bot :               PROP
   var : V           → PROP
   _⇒_ : PROP → PROP → PROP
 
@@ -50,6 +49,8 @@ data _⊢_ : Cxt → PROP → Set where
           Γ ⊢ p ⇒ q    →    Γ ⊢ p    →
         ---------------------------- 
                    Γ ⊢ q
+
+-- consistency : ¬ ((p : PROP) → [] ⊢ p)
 
 
 --------
@@ -201,24 +202,24 @@ data Bool : Set where
   false : Bool
   true  : Bool
 
+if_then_else_ : {A : Set} → Bool → A → A → A
+if false then x else y = x
+if true  then x else y = y
+
 Assignment : Set
 Assignment = V → Bool
 
-test : (b : Bool) → Dec (b ≡ true)
-test false = no (λ ())
-test true  = yes refl
-
 ⟦_⟧ : PROP → Assignment → Bool
-⟦ bot   ⟧ σ = false
 ⟦ var x ⟧ σ = σ x
-⟦ p ⇒ q ⟧ σ with test (⟦ p ⟧ σ)
-⟦ p ⇒ q ⟧ σ | yes _ = ⟦ q ⟧ σ
-⟦ p ⇒ q ⟧ σ | no  _ = true
+⟦ p ⇒ q ⟧ σ = if ⟦ p ⟧ σ then true else ⟦ q ⟧ σ
 
 infix 3 _models_
 
 _models_ : Assignment → PROP → Set
 σ models p = ⟦ p ⟧ σ ≡ true
+
+Valid : PROP → Set
+Valid p = (σ : Assignment) → σ models p
 
 infix 2 _Models_
 
@@ -229,6 +230,34 @@ data _Models_ (σ : Assignment) : Cxt → Set where
 _⊧_ : Cxt → PROP → Set
 Γ ⊧ p = (σ : Assignment) → σ Models Γ → σ models p
 
+validity-exercise : (p q : PROP) → Valid ((p ⇒ (p ⇒ q)) ⇒ (p ⇒ q))
+validity-exercise p q σ with ⟦ p ⟧ σ 
+validity-exercise p q σ | false = refl
+validity-exercise p q σ | true with ⟦ q ⟧ σ 
+validity-exercise p q σ | true | false = refl
+validity-exercise p q σ | true | true  = refl
+
+validity-semantic-consequence : (p : PROP) → Valid p → [] ⊧ p
+validity-semantic-consequence p v σ σ⊧[] = v σ
+
+semantic-consequence-validity : (p : PROP) → [] ⊧ p → Valid p
+semantic-consequence-validity p ⊧p σ = ⊧p σ nil
+
+-- soundness
+
+data Magic (p : PROP) (σ : Assignment) : Bool → Set where
+  E : {b : Bool} → ⟦ p ⟧ σ ≡ b → Magic p σ b
+
+magic : (p : PROP) (σ : Assignment) (b : Bool) → ⟦ p ⟧ σ ≡ b → Magic p σ b
+magic p σ false eq = E eq
+magic p σ true  eq = E eq
+
+equation : (p : PROP) (σ : Assignment) → Magic p σ (⟦ p ⟧ σ)
+equation p σ = magic p σ (⟦ p ⟧ σ) refl
+
+impossible : {b : Bool} → b ≡ true → b ≡ false → {A : Set} → A
+impossible refl ()
+
 infix 5 _!!_
 
 _!!_ : {σ : Assignment} {p : PROP} {Γ : Cxt} → σ Models Γ → p ∈ Γ → σ models p
@@ -236,13 +265,13 @@ cons m ms !! zero  = m
 cons m ms !! suc i = ms !! i
 
 soundness : {Γ : Cxt} {p : PROP} → Γ ⊢ p → Γ ⊧ p
-soundness (assum i           ) σ ms = ms !! i
-soundness (⇒I {Γ} {p} t      ) σ ms with test (⟦ p ⟧ σ)
-soundness (⇒I {Γ} {p} t      ) σ ms | yes mp = soundness t σ (cons mp ms)
-soundness (⇒I {Γ} {p} t      ) σ ms | no  _  = refl
-soundness (⇒E {Γ} {p} {q} s t) σ ms with soundness s σ ms
-soundness (⇒E {Γ} {p} {q} s t) σ ms | mq with test (⟦ p ⟧ σ)
-soundness (⇒E {Γ} {p} {q} s t) σ ms | mq | yes _   = mq
-soundness (⇒E {Γ} {p} {q} s t) σ ms | _  | no  ¬mp = ⊥-elim (¬mp (soundness t σ ms))
+soundness (assum i           ) σ σ⊧Γ = σ⊧Γ !! i
+soundness (⇒I {Γ} {p} t      ) σ σ⊧Γ with ⟦ p ⟧ σ | equation p σ
+soundness (⇒I {Γ} {p} t      ) σ σ⊧Γ | false | E σ/⊧⟦p⟧σ = refl
+soundness (⇒I {Γ} {p} t      ) σ σ⊧Γ | true  | E σ⊧⟦p⟧σ  = soundness t σ (cons σ⊧⟦p⟧σ σ⊧Γ)
+soundness (⇒E {Γ} {p} {q} s t) σ σ⊧Γ with soundness s σ σ⊧Γ
+soundness (⇒E {Γ} {p} {q} s t) σ σ⊧Γ | σ⊧q with ⟦ p ⟧ σ | equation p σ
+soundness (⇒E {Γ} {p} {q} s t) σ σ⊧Γ | σ⊧q | false | E σ/⊧⟦p⟧σ = impossible (soundness t σ σ⊧Γ) σ/⊧⟦p⟧σ
+soundness (⇒E {Γ} {p} {q} s t) σ σ⊧Γ | σ⊧q | true  | E σ⊧⟦p⟧σ  = σ⊧q
 
 -- completeness : {Γ : Cxt} {p : PROP} → Γ ⊧ p → Γ ⊢ p

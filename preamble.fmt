@@ -28,6 +28,7 @@
 %format : = "\relation{:}"
 %format :: = "\relation{::}"
 %format ENTAILS = "\relation{\vdash}\!"
+%format MODELS = "\relation{\models}\!"
 %format BIND = "\kern-2pt."
 %format = = "\relation{=}\kern-.75pt"
 %format DEFEQ = "\kern-2pt\mathrel{\mathop:}=\kern-2pt"
@@ -48,6 +49,9 @@
 %format BOT = "\mathbf 0"
 %format absurd = "\constant{absurd}"
 %format NEG = "\neg\!"
+%format BOOL = "\mathbf 2"
+%format false = "\constant{false}"
+%format true = "\constant{true}"
 %format Pi' = "\Pi"
 %format (Pi x (t)) = "\Pi\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1.25pt]\kern1.5pt"
 %format Sigma' = "\Sigma"
@@ -63,6 +67,9 @@
 %format suc = "\constant{suc}"
 %format ind = "\constant{ind}"
 %format Gamma = "\Gamma"
+%format sigma = "\sigma"
+
+%format (sem(t)) = "[\![" t "\kern.75pt]\!]"
 
 %format YCOMB = "\constant{Y}\kern-1.5pt"
 

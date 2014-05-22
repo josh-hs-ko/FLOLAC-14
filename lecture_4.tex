@@ -21,7 +21,155 @@
 \titlepage
 \end{frame}}
 
-\begin{frame}{Summary and roadmap}
+\begin{frame}{Recap}
+
+We have talked about the \emph{statics} and the \emph{dynamics} of type theory:
+\begin{itemize}
+\item the statics is typechecking, explaining why a program is a valid inhabitant of a type;
+\item the dynamics is judgemental equality, capturing the notion of computation abstractly.
+\end{itemize}
+
+Both are expressed as derivations of judgements.
+
+\end{frame}
+
+\begin{frame}{Meta-language vs object language}
+
+Types and programs form a language, which are talked about by a separate language of judgements and derivations.
+In this case we call the former  the \emph{object language}, and the latter the \emph{meta-language}.
+
+What we write down as types and programs are nothing more than certain syntax trees by themselves; then, at a higher level, we organise and relate these syntax trees with judgements and derivations.
+
+Judgements and derivations can also be regarded as syntax trees to be reasoned about.
+For example, consistency is a statement in which judgements and derivations are the object language and English is the meta-language.
+
+We can also use Agda as the meta-language!
+
+\end{frame}
+
+\begin{frame}{Implicational fragment of propositional logic}
+
+Today we consider only propositions formed with implication.
+
+Each of these propositions is a finite tree whose internal nodes are implications and whose leaves are atomic propositions, which are elements of a given set |V = { A, B, C, {-"\text\ldots"-} }|.
+
+\marker{Example} The proposition |(A -> B -> C) -> (A -> C) -> B -> C| is represented as
+\[
+\tikz[every node/.style={draw}, every child/.style={level distance=5.5ex}, level 1/.style={sibling distance=10em}, level 2/.style={sibling distance=5em}, level 3/.style={sibling distance=2.5em}]
+  \node [circle] {$\to$}
+    child { node [circle] {$\to$}
+              child { node [circle] {\kern-.75pt$A$} }
+              child { node [circle] {$\to$}
+                        child { node [circle] {\kern-.5pt$B$} }
+                        child { node [circle] {\kern-2pt$C$} } } }
+    child { node [circle] {$\to$}
+              child { node [circle] {$\to$}
+                        child { node [circle] {\kern-.75pt$A$} }
+                        child { node [circle] {\kern-2pt$C$} } }
+              child { node [circle] {$\to$}
+                        child { node [circle] {\kern-.5pt$B$} }
+                        child { node [circle] {\kern-2pt$C$} } } };
+\]
+
+\end{frame}
+
+\begin{frame}{Natural deduction}
+
+Natural deduction is the type part of simple type theory (and we are considering only the implicational fragment).
+
+\[ \AXC{$|p| \in |Gamma|$}
+\rule{assum}\UIC{|Gamma ENTAILS p|} \DP \]
+
+\[ \AXC{|Gamma , p ENTAILS q|}
+\rule{$\to$I}\UIC{|Gamma ENTAILS p -> q|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS p -> q|} \AXC{|Gamma ENTAILS p|}
+\rule{$\to$E}\BIC{|Gamma ENTAILS q|} \DP \]
+
+\end{frame}
+
+\begin{frame}{Untyped $\lambda$-calculus}
+
+
+|(\x BIND x x) (\x BIND x x)|
+
+\end{frame}
+
+\begin{frame}{Simply typed $\lambda$-calculus (à~la Curry)}
+
+\end{frame}
+
+\begin{frame}{Curry--Howard isomorphism}
+
+Derivations in natural deduction and well-typed $\lambda$-terms are in one-to-one correspondence.
+
+That is, we can write two functions,
+\begin{itemize}
+\item one mapping a logical derivation in natural deduction to a $\lambda$-term and its typing derivation, and
+\item the other mapping a $\lambda$-term with a typing derivation to a logical derivation in natural deduction,
+\end{itemize}
+and can prove that the two functions are inverse to each other.
+
+This result is historically significant: two formalisms are developed separately from logical and computational perspectives, yet they coincide perfectly.
+
+\end{frame}
+
+\begin{frame}{Simply typed $\lambda$-calculus à~la Church}
+
+The Curry--Howard isomorphism points out that derivations in natural deduction are actually $\lambda$-terms in disguise.
+
+These $\lambda$-terms are intrinsically typed, so every term we are able to write down is necessarily well-behaved, whereas in simply typed $\lambda$-calculus à~la Curry, we can write arbitrary $\lambda$-terms, and only rule out ill-behaved ones via typing later.
+
+\end{frame}
+
+\begin{frame}{Semantics}
+
+After defining a language (like the implicational fragment of propositional logic), which consists of a bunch of syntax trees, we need to specify what these trees mean.
+
+Judgements and derivations (which form a \emph{deduction system}) assign meaning to the propositional language by specifying how it is used in formal reasoning.
+
+We can also translate the syntax trees into entities in a well understood semantic domain.
+In the case of propositional logic, we can translate propositional trees to functions on truth values. (This is the classical treatment.)
+
+\end{frame}
+
+\begin{frame}{Two-valued semantics of propositional logic}
+
+\begin{itemize}
+
+\item Define |BOOL DEFEQ { false, true }|.
+
+\item An \emph{assignment} is a function of type |V -> BOOL|.
+
+\item A proposition~|p| is translated into a function |(sem p) : (V -> BOOL) -> BOOL| mapping assignments to truth values.
+
+\item An assignment~|sigma| \emph{models} a proposition~|p| exactly when |(sem p) sigma| is true, and \emph{models} a context~|Gamma| exactly when it models every proposition in~|Gamma|.
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Two-valued semantics of propositional logic}
+
+\begin{itemize}
+
+\item A proposition~|p| is \emph{satisfiable} exactly when there exists an assignment that models~|p|, and is \emph{valid} exactly when every assignment models~|p|.
+
+\item A proposition~|p| is a \emph{semantic consequence} of a context~|Gamma| (written $|Gamma| \models |p|$) exactly when every assignment that models~|Gamma| also models~|p|.
+
+\end{itemize}
+
+\marker{Exercise} Show that |(p -> p -> q) -> (p -> q)| is valid for any propositions |p|~and~|q|.
+
+\marker{Exercise} Show that a proposition~|p| is valid if and only if |p|~is a semantic consequence of the empty context.
+
+\end{frame}
+
+\begin{frame}{Deduction systems and semantics}
+
+Natural deduction is \emph{sound} with respect to the two-valued semantics: whenever we can deduce $|Gamma| \vdash |p|$, it must be the case that $|Gamma| \models |p|$.
+
+If the system of natural deduction is suitably extended, then it is also possible to prove that it is \emph{(semantically) complete} with respect to the two-valued semantics: if $|Gamma| \models |p|$, then we can construct a derivation of $|Gamma| \vdash |p|$.
 
 \end{frame}
 
