@@ -11,7 +11,7 @@
 %include document.fmt
 
 \title{Type theory and logic}
-\subtitle{Lecture~\lectureno: Heyting arithmetic}
+\subtitle{Lecture~\lectureno: natural number arithmetic}
 \date{3 July 2014}
 \author{{\fontspec[ExternalLocation=/Library/Fonts/]{DFHeiStd-W5}\href{http://www.cs.ox.ac.uk/people/hsiang-shang.ko/}{柯向上}}}
 \institute{\href{http://www.cs.ox.ac.uk/}{Department of Computer Science}\\ \href{http://www.ox.ac.uk/}{University of Oxford}\\ \href{mailto:Hsiang-Shang.Ko@@cs.ox.ac.uk}{Hsiang-Shang.Ko\char64 cs.ox.ac.uk}}
@@ -85,6 +85,8 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 
 \begin{frame}{Induction principle}
 
+The set of natural numbers is \emph{inductively defined}.
+
 \end{frame}
 
 \begin{frame}{Identity types}
@@ -103,6 +105,30 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 \end{frame}
 
 \begin{frame}{Identity types --- elimination and computation}
+
+\begin{itemize}
+
+\item Elimination:
+\[ \AXC{|Gamma ENTAILS P : A -> U|} \AXC{|Gamma ENTAILS p : P t|} \AXC{|Gamma ENTAILS q : Id A t u|}
+\rule{$\equiv$E}\TIC{|Gamma ENTAILS transport P p q : P u|} \DP \]
+
+\item Computation:
+\[ \AXC{|Gamma ENTAILS P : A -> U|} \AXC{|Gamma ENTAILS p : P t|}
+\rule{$\equiv$C}\BIC{|Gamma ENTAILS transport P p (refl t) = p IN P t|} \DP \]
+
+\end{itemize}
+
+\marker{Exercise} Prove that |Id| is symmetric and transitive, i.e.,
+\[ |(Pi A U) (Pi x A) (Pi y A) Id A x y -> Id A y x| \]
+and
+\begin{align*}
+& |(Pi A U) (Pi x A) (Pi y A) (Pi z A)| \\[.5ex]
+& \qquad |Id A x y -> Id A y z -> Id A x z|
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{Identity types --- general elimination and computation}
 
 \begin{itemize}
 
@@ -129,18 +155,6 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 \end{tabular}$ \DP \]
 
 \end{itemize}
-
-\end{frame}
-
-\begin{frame}{Exercises}
-
-\marker{Exercise} Prove that |Id| is symmetric and transitive, i.e.,
-\[ |(Pi A U) (Pi x A) (Pi y A) Id A x y -> Id A y x| \]
-and
-\begin{align*}
-& |(Pi A U) (Pi x A) (Pi y A) (Pi z A)| \\[.5ex]
-& \qquad |Id A x y -> Id A y z -> Id A x z|
-\end{align*}
 
 \end{frame}
 

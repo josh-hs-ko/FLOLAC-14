@@ -96,7 +96,7 @@ What about
 ?
 
 Now let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
-Derive the \emph{axiom of choice}:
+Prove the \emph{axiom of choice}, i.e., derive
 \begin{align*}
 |Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
 & |(Sigma f (A -> B)) (Pi z A) R z (f z)|
@@ -159,14 +159,14 @@ So far we have been concentrating on the \emph{statics} of type theory; here we 
 
 We introduce a new kind of judgements stating that two terms should be regarded as the same during typechecking:
 \[ |Gamma ENTAILS t = u IN A| \]
-for which we also have a well-formedness requirement that |A|~and everything appearing on the right of the colons in~|Gamma| are judged to be sets, and |t|~and~|u| are judged to be elements of~|A|.
+in which we require that |A|~and everything appearing on the right of the colons in~|Gamma| are judged to be sets, and |t|~and~|u| are judged to be elements of~|A|.
 
 \end{frame}
 
 \begin{frame}{Computation rules}
 
 For each set, (when applicable) we specify additional \emph{computation rules} stating how to eliminate an introductory term.
-This is the type-theoretic manifestation of \emph{Gentzen's inversion principle}.
+This is the type-theoretic manifestation of \emph{Gentzen's inversion principle}: elimination rules should be justified in terms of introduction rules.
 
 For example, for product types we have two computation rules:
 \abovedisplay
@@ -209,21 +209,6 @@ For example, for product types we have two computation rules:
 
 \end{frame}
 
-\begin{frame}{Equivalence rules}
-
-Judgemental equality is an equivalence relation.
-
-\[ \AXC{|Gamma ENTAILS t : A|}
-\rule{refl}\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
-
-\[ \AXC{|Gamma ENTAILS t = u IN A|}
-\rule{sym}\UIC{|Gamma ENTAILS u = t IN A|} \DP \]
-
-\[ \AXC{|Gamma ENTAILS t = u IN A|} \AXC{|Gamma ENTAILS u = v IN A|}
-\rule{trans}\BIC{|Gamma ENTAILS t = v IN A|} \DP \]
-
-\end{frame}
-
 \begin{frame}{Congruence rules}
 
 We need a congruence rule for each constant we introduce:
@@ -244,6 +229,21 @@ We need a congruence rule for each constant we introduce:
 \BIC{|Gamma ENTAILS f a = f SKIP PRIME a PRIME IN B|} \DP \]
 
 \ldots\ and similar rules for |left|, |right|, |case|, and |absurd|.
+
+\end{frame}
+
+\begin{frame}{Equivalence rules}
+
+Judgemental equality is an equivalence relation.
+
+\[ \AXC{|Gamma ENTAILS t : A|}
+\rule{refl}\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS t = u IN A|}
+\rule{sym}\UIC{|Gamma ENTAILS u = t IN A|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS t = u IN A|} \AXC{|Gamma ENTAILS u = v IN A|}
+\rule{trans}\BIC{|Gamma ENTAILS t = v IN A|} \DP \]
 
 \end{frame}
 
@@ -286,11 +286,11 @@ We can state congruence rules for dependent products and sums only after we have
 
 Our judgemental equality is \emph{decidable}: for any equality judgement we can decide whether it has a derivation or not.
 
+(As a consequence, typechecking is also decidable.)
+
 Decidability is achieved by \emph{reducing} terms to their \emph{normal forms} and see if the normal forms match.
 
-Next week's \emph{operational semantics} will discuss term reduction in detail, where we will see various \emph{reduction strategies}.
-
-Judgemental equality is formulated without reference to any particular reduction strategy --- it captures the notion of computation only abstractly.
+There are various \emph{reduction strategies}, and judgemental equality is formulated without reference to any particular reduction strategy --- it captures the notion of computation only abstractly.
 
 \end{frame}
 
@@ -327,7 +327,7 @@ By including the LEM rule, our logic system can now derive intuitionistically in
 
 The LEM rule breaks canonicity, however (why?) --- the system is no longer computationally meaningful.
 
-We are actually abusing the intuitionistic system to state classical facts, though.
+We are actually abusing the intuitionistic system to state classical facts, though --- classical disjunction and existence are semantically weaker than their intuitionistic counterparts.
 
 \end{frame}
 
@@ -339,9 +339,11 @@ The \emph{Gödel--Gentzen negative translation} embeds classical logic into intu
 \item representing disjunction by `|NEG (NEG {-"\text\ldots\kern1pt"-} TIMES NEG {-"\kern3pt\text\ldots"-})|'.
 \end{itemize}
 
+Via this embedding, every classically valid proposition can be proved in intuitionistic logic.
+
 \marker{Exercise} Let |Gamma DEFEQ A : U, a : A, D : A -> U|. (Note that |A|~is an inhabited set.) Derive
 \[ |Gamma ENTAILS _ : NEG (Pi x A) NEG (NEG NEG D x -> (Pi y A) NEG NEG D y)| \]
-which is the Gödel--Gentzen negative translation of
+where the proposition is the Gödel--Gentzen negative translation of
 \[ \exists\kern1pt[\kern1pt x : A \kern1.25pt]\kern1.5pt\; D\;x \relation{\to} \forall\kern1pt[\kern1pt y : A \kern1.25pt]\kern1.5pt\; D\;y \]
 
 \end{frame}

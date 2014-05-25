@@ -2,7 +2,7 @@
 
 {-# OPTIONS --type-in-type #-}
 
-module Russell where
+module RussellC where
 
 open import Data.Empty
 open import Data.Product
@@ -10,7 +10,6 @@ open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
 
 -- a set is an indexed collection of elements, which are themselves sets
--- this declaration is rejected if the --type-in-type option is not given
 data U : Set where
   set : (I : Set) → (I → U) → U
 
@@ -24,11 +23,11 @@ R = set (Σ U Regular) proj₁
 
 -- R is not regular
 R-nonreg : ¬ Regular R
-R-nonreg = {!!}
+R-nonreg reg = reg (R , reg) refl
 
 -- R is regular
 R-reg : Regular R
-R-reg = {!!}
+R-reg (x , reg) p = subst Regular p reg (x , reg) p
 
 -- R cannot be regular and non-regular at the same time
 contradiction : ⊥

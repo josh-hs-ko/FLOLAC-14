@@ -59,6 +59,7 @@
 %format LEM = "\constant{LEM}"
 %format Id = "\constant{Id}"
 %format refl = "\constant{refl}"
+%format transport = "\constant{transport}"
 %format J = "\constant{J}"
 %format J' = "J"
 
