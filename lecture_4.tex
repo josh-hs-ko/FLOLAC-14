@@ -42,6 +42,7 @@ What we write down as types and programs are nothing more than certain syntax tr
 
 Judgements and derivations can also be regarded as syntax trees to be reasoned about.
 For example, consistency is a statement in which judgements and derivations are the object language and English is the meta-language.
+(Canonicity is another example.)
 
 We can also use Agda as the meta-language!
 
@@ -77,8 +78,8 @@ Each of these propositions is a finite tree whose internal nodes are implication
 
 Natural deduction is the type part of simple type theory (and we are considering only the implicational fragment).
 
-\[ \AXC{$|p| \in |Gamma|$}
-\rule{assum}\UIC{|Gamma ENTAILS p|} \DP \]
+\[ \AXC{}
+\rule{assum}\UIC{|Gamma ENTAILS p|} \DP \quad\text{when } |p| \,\in\, |Gamma| \]
 
 \[ \AXC{|Gamma , p ENTAILS q|}
 \rule{$\to$I}\UIC{|Gamma ENTAILS p -> q|} \DP \]
@@ -90,12 +91,31 @@ Natural deduction is the type part of simple type theory (and we are considering
 
 \begin{frame}{Untyped $\lambda$-calculus}
 
+A $\lambda$-term is either a variable, an abstraction, or an application.
 
-|(\x BIND x x) (\x BIND x x)|
+We usually assume \emph{$\alpha$-equivalence} of $\lambda$-terms, i.e., the names of \emph{bound variables} do not matter.
+\begin{itemize}
+\item Change of bound variable names is called $\alpha$-conversion, which has to be \emph{capture-avoiding}, i.e., \emph{free variables} must not become bound after a name change.
+\item In formalisation, we prefer not to deal with $\alpha$-equivalence explicitly, and one way is to use \emph{de~Bruijn indices} --- $\lambda$'s are nameless, and a bound variable is represented as a natural number indicating to which~$\lambda$ it is bound.
+\end{itemize}
 
 \end{frame}
 
 \begin{frame}{Simply typed $\lambda$-calculus (à~la Curry)}
+
+$\lambda$-calculus was designed to model function abstraction and application in mathematics.
+In untyped $\lambda$-calculus, however, we can write nonsensical terms like |\x BIND x x|.
+
+We can use the implicational fragement of propositional logic as a type language for $\lambda$-calculus, ruling out nonsensical terms.
+
+\[ \AXC{}
+\rule{var}\UIC{|Gamma ENTAILS x : p|} \DP \quad\text{when } |x : p| \,\in\, |Gamma| \]
+
+\[ \AXC{|Gamma, x : p ENTAILS t : q|}
+\rule{abs}\UIC{|Gamma ENTAILS \x BIND t : p -> q|} \DP \]
+
+\[ \AXC{|Gamma ENTAILS t : p -> q|} \AXC{|Gamma ENTAILS u : p|}
+\rule{app}\BIC{|Gamma ENTAILS t u : q|} \DP \]
 
 \end{frame}
 
@@ -169,7 +189,7 @@ In the case of propositional logic, we can translate propositional trees to func
 
 Natural deduction is \emph{sound} with respect to the two-valued semantics: whenever we can deduce $|Gamma| \vdash |p|$, it must be the case that $|Gamma| \models |p|$.
 
-If the system of natural deduction is suitably extended, then it is also possible to prove that it is \emph{(semantically) complete} with respect to the two-valued semantics: if $|Gamma| \models |p|$, then we can construct a derivation of $|Gamma| \vdash |p|$.
+The implicational fragment of propositional logic is also \emph{(semantically) complete} with respect to the two-valued semantics: if $|Gamma| \models |p|$, then we can construct a derivation of $|Gamma| \vdash |p|$.
 
 \end{frame}
 

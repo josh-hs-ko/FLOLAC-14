@@ -36,23 +36,17 @@
 \qquad
 \AXC{|Gamma ENTAILS n : Nat|}
 \rule{|Nat|IS}\UIC{|Gamma ENTAILS suc n : Nat|} \DP \]
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{Natural numbers --- elimination rule}
-
-\begin{itemize}
 
 \item Elimination:
-\[ \AXC{\begin{tabular}{l}
+\[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
 |Gamma ENTAILS z : P SKIP zero| \\
 |Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
 |Gamma ENTAILS n : Nat|
-\end{tabular}}
-\rule{|Nat|E}\UIC{|Gamma ENTAILS ind P z s n : P n|} \DP \]
-
+\end{tabular}$
+\rule{|Nat|E}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS ind P z s n : P n|
+\end{tabular}$ \DP \]
 Logically this is the \emph{induction principle}; computationally this is \emph{primitive recursion}.
 
 \end{itemize}
@@ -64,22 +58,32 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 \begin{itemize}
 
 \item Computation:
-\[ \AXC{\begin{tabular}{l}
+\[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
 |Gamma ENTAILS z : P SKIP zero| \\
 |Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-\end{tabular}}
-\rule{|Nat|CZ}\UIC{|Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|} \DP \]
+\end{tabular}$
+\rule{|Nat|CZ}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|
+\end{tabular}$ \DP \]
 
-\[ \AXC{\begin{tabular}{l}
+\[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
 |Gamma ENTAILS z : P SKIP zero| \\
 |Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
 |Gamma ENTAILS n : Nat|
-\end{tabular}}
-\rule{|Nat|CS}\UIC{|Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|} \DP \]
+\end{tabular}$
+\rule{|Nat|CS}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|
+\end{tabular}$ \DP \]
 
 \end{itemize}
+
+\marker{Exercise} Define addition and multiplication with |ind|.
+
+\end{frame}
+
+\begin{frame}{Induction principle}
 
 \end{frame}
 
@@ -91,46 +95,96 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 \rule{$\equiv$F}\TIC{|Gamma ENTAILS Id A t u : U|} \DP \]
 \item Introduction:
 \[ \AXC{|Gamma ENTAILS t : A|}
-\rule{$\equiv$I}\UIC{|Gamma ENTAILS refl : Id A t t|} \DP \]
+\rule{$\equiv$I}\UIC{|Gamma ENTAILS refl t : Id A t t|} \DP \]
 \end{itemize}
 
-\marker{Exercise} Assume |Gamma ENTAILS t = u IN A| and derive \rlap{|Gamma ENTAILS refl : Id A t u|.}
+\marker{Exercise} Assume |Gamma ENTAILS t = u IN A| and derive |Gamma ENTAILS refl t : Id A t u|.
 
 \end{frame}
 
-\begin{frame}{Identity types --- elimination rule}
+\begin{frame}{Identity types --- elimination and computation}
 
 \begin{itemize}
 
 \item Elimination:
-\[ \AXC{\begin{tabular}{l}
+\[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS t : A| \\
 |Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
-|Gamma ENTAILS p : P t SKIP refl| \\
+|Gamma ENTAILS p : P t SKIP (refl t)| \\
 |Gamma ENTAILS u : A| \\
 |Gamma ENTAILS q : Id A t u|
-\end{tabular}}
-\rule{$\equiv$E}\UIC{|Gamma ENTAILS J P p q : P u q|} \DP \]
+\end{tabular}$
+\rule{$\equiv$E}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS J P p q : P u q|
+\end{tabular}$ \DP \]
+
+\item Computation:
+\[ \Axiom$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS t : A| \\
+|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
+|Gamma ENTAILS p : P t SKIP (refl t)|
+\end{tabular}$
+\rule{$\equiv$C}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS J P p SKIP (refl t) = p IN P t SKIP (refl t)|
+\end{tabular}$ \DP \]
 
 \end{itemize}
 
+\end{frame}
 
-\marker{Exercise} Derive
-\[ |P : A -> U ENTAILS _ : (Pi x A) (Pi y A) Id A x y -> P x -> P y| \]
+\begin{frame}{Exercises}
+
+\marker{Exercise} Prove that |Id| is symmetric and transitive, i.e.,
+\[ |(Pi A U) (Pi x A) (Pi y A) Id A x y -> Id A y x| \]
+and
+\begin{align*}
+& |(Pi A U) (Pi x A) (Pi y A) (Pi z A)| \\[.5ex]
+& \qquad |Id A x y -> Id A y z -> Id A x z|
+\end{align*}
 
 \end{frame}
 
-\begin{frame}{Identity types --- computation rule}
+\begin{frame}{Peano axioms}
+
+Peano axioms specify an \emph{equational theory} of natural number arithmetic; all of them are provable in type theory.
 
 \begin{itemize}
 
-\item Computation:
-\[\AXC{\begin{tabular}{l}
-|Gamma ENTAILS t : A| \\
-|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
-|Gamma ENTAILS p : P t SKIP refl|
-\end{tabular}}
-\rule{$\equiv$C}\UIC{|Gamma ENTAILS J P p SKIP refl = p IN P t SKIP refl|} \DP \]
+\item Zero is a natural number. If |n|~is a natural number, so is the successor of~|n|.
+
+\quad --- The introduction rules.
+
+\item Equality on natural numbers is an equivalence relation; that is, it is reflexive, transitive, and symmetric.
+
+\quad --- We use |Id|, which indeed satisfies the above properties.
+
+\item The successor operation is an injective function, i.e.,
+\[ |(Pi m Nat) (Pi n Nat) Id Nat m n <-> Id Nat (suc m) (suc n)| \]
+
+\item The successor operation never yields zero, i.e.,
+\[ |(Pi n Nat) Id Nat (suc n) zero -> BOT| \]
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Peano axioms}
+
+\begin{itemize}
+
+\item Addition satisfies
+\[ |(Pi n Nat) Id Nat (zero + n) n| \]
+and
+\[ |(Pi m Nat) (Pi n Nat) Id Nat ((suc m) + n) (suc (m + n))| \]
+
+\item Multiplication satisfies
+\[ |(Pi n Nat) Id Nat (zero * n) zero| \]
+and
+\[ |(Pi m Nat) (Pi n Nat) Id Nat ((suc m) * n) (n + m * n)| \]
+
+\item The induction principle holds for natural numbers.
+
+\quad --- The elimination rule.
 
 \end{itemize}
 

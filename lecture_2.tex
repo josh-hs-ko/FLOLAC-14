@@ -88,18 +88,18 @@ Derive
 \begin{frame}{Exercises}
 
 Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|. Derive
-\[ |Gamma ENTAILS _ : ((Pi x A) B x TIMES C x) <-> ((Pi x A) B x) TIMES ((Pi x A) C x)| \]
-\[ |Gamma ENTAILS _ : ((Sigma x A) B x PLUS C x) <-> ((Sigma x A) B x) PLUS ((Sigma x A) C x)| \]
+\[ |Gamma ENTAILS _ : ((Pi x A) B x TIMES C x) <-> ((Pi y A) B y) TIMES ((Pi z A) C z)| \]
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x PLUS C x) <-> ((Sigma y A) B y) PLUS ((Sigma z A) C z)| \]
 What about
-\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS C x) <-> ((Pi x A) B x) PLUS ((Pi x A) C x)| \]
-\[ |Gamma ENTAILS _ : ((Sigma x A) B x TIMES C x) <-> ((Sigma x A) B x) TIMES ((Sigma x A) C x)| \]
+\[ |Gamma ENTAILS _ : ((Pi x A) B x PLUS C x) <-> ((Pi y A) B y) PLUS ((Pi z A) C z)| \]
+\[ |Gamma ENTAILS _ : ((Sigma x A) B x TIMES C x) <-> ((Sigma y A) B y) TIMES ((Sigma z A) C z)| \]
 ?
 
 Now let |Gamma DEFEQ A : U, B : U, R : A -> B -> U|.
 Derive the \emph{axiom of choice}:
 \begin{align*}
 |Gamma ENTAILS _ : {-"\null"-}| & |((Pi x A) (Sigma y B) R x y) ->| \\[.5ex]
-& |(Sigma f (A -> B)) (Pi x A) R x (f x)|
+& |(Sigma f (A -> B)) (Pi z A) R z (f z)|
 \end{align*}
 
 \end{frame}
@@ -165,7 +165,7 @@ for which we also have a well-formedness requirement that |A|~and everything app
 
 \begin{frame}{Computation rules}
 
-For each set, (when applicable) we specify additional \emph{computation rules} stating that eliminating an introductory term yields a component of the latter.
+For each set, (when applicable) we specify additional \emph{computation rules} stating how to eliminate an introductory term.
 This is the type-theoretic manifestation of \emph{Gentzen's inversion principle}.
 
 For example, for product types we have two computation rules:
@@ -183,6 +183,8 @@ For example, for product types we have two computation rules:
 
 \[ \AXC{|Gamma, x : A ENTAILS t : B|} \AXC{|Gamma ENTAILS a : A|}
 \rule{$\to$C}\BIC{|Gamma ENTAILS (\x BIND t) a = t(subst a x) IN A -> B|} \DP \]
+
+\marker{Notation} The term |t(subst a x)| is the result of \emph{substituting} the term~|a| for all ``free occurrences'' of the variable~|x| in the term~|t|.
 
 
 \[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS f : A -> C|} \AXC{|Gamma ENTAILS g : B -> C|}
@@ -238,8 +240,8 @@ We need a congruence rule for each constant we introduce:
 \[ \AXC{|Gamma, x : A ENTAILS t = t PRIME IN B|}
 \UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN A -> B|} \DP \]
 
-\[ \AXC{|Gamma ENTAILS f = f {-"\kern1pt"-} PRIME IN A|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
-\BIC{|Gamma ENTAILS f a = f {-"\kern1pt"-} PRIME a PRIME IN B|} \DP \]
+\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN A -> B|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
+\BIC{|Gamma ENTAILS f a = f SKIP PRIME a PRIME IN B|} \DP \]
 
 \ldots\ and similar rules for |left|, |right|, |case|, and |absurd|.
 
@@ -275,7 +277,7 @@ We can state congruence rules for dependent products and sums only after we have
 \[ \AXC{|Gamma, x : A ENTAILS t = t PRIME IN B x|}
 \UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN Pi' A B|} \DP \]
 
-\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN A|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
+\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN Pi' A B|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
 \BIC{|Gamma ENTAILS f a = f SKIP PRIME a PRIME IN B a|} \DP \]
 
 \end{frame}
@@ -333,8 +335,8 @@ We are actually abusing the intuitionistic system to state classical facts, thou
 The \emph{Gödel--Gentzen negative translation} embeds classical logic into intuitionistic logic by
 \begin{itemize}
 \item putting double negation in front of ``atomic propositions'',
-\item replacing `|(Sigma x A) {-"\text\ldots"-}|' with `|NEG (Pi x A) NEG {-"\kern3pt\text\ldots"-}|', and
-\item replacing `|{-"\text\ldots\kern1pt"-} PLUS {-"\kern2pt\text\ldots"-}|' with `|NEG (NEG {-"\text\ldots\kern1pt"-} TIMES NEG {-"\kern3pt\text\ldots"-})|'.
+\item representing existential quantification by `|NEG (Pi x A) NEG {-"\kern3pt\text\ldots"-}|', and
+\item representing disjunction by `|NEG (NEG {-"\text\ldots\kern1pt"-} TIMES NEG {-"\kern3pt\text\ldots"-})|'.
 \end{itemize}
 
 \marker{Exercise} Let |Gamma DEFEQ A : U, a : A, D : A -> U|. (Note that |A|~is an inhabited set.) Derive

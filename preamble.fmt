@@ -44,12 +44,12 @@
 %format left = "\constant{left}"
 %format right = "\constant{right}"
 %format case = "\constant{case}"
-%format TOP = "\mathbf 1"
+%format TOP = "\top"
 %format unit = "\constant{unit}"
-%format BOT = "\mathbf 0"
+%format BOT = "\bot"
 %format absurd = "\constant{absurd}"
 %format NEG = "\neg\!"
-%format BOOL = "\mathbf 2"
+%format BOOL = "\constant{Bool}"
 %format false = "\constant{false}"
 %format true = "\constant{true}"
 %format Pi' = "\Pi"
@@ -68,6 +68,8 @@
 %format ind = "\constant{ind}"
 %format Gamma = "\Gamma"
 %format sigma = "\sigma"
+
+%format * = "\kern-1pt\times\kern-1pt"
 
 %format (sem(t)) = "[\![" t "\kern.75pt]\!]"
 
