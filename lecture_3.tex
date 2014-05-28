@@ -91,13 +91,15 @@ The set of natural numbers is \emph{inductively defined}.
 
 \begin{frame}{Identity types}
 
+\emph{Identity types} are also called \emph{propositional equality}, especially when drawing contrast with judgemental equality.
+
 \begin{itemize}
 \item Formation:
 \[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS t : A|} \AXC{|Gamma ENTAILS u : A|}
-\rule{$\equiv$F}\TIC{|Gamma ENTAILS Id A t u : U|} \DP \]
+\rule{|Id|F}\TIC{|Gamma ENTAILS Id A t u : U|} \DP \]
 \item Introduction:
 \[ \AXC{|Gamma ENTAILS t : A|}
-\rule{$\equiv$I}\UIC{|Gamma ENTAILS refl t : Id A t t|} \DP \]
+\rule{|Id|I}\UIC{|Gamma ENTAILS refl t : Id A t t|} \DP \]
 \end{itemize}
 
 \marker{Exercise} Assume |Gamma ENTAILS t = u IN A| and derive |Gamma ENTAILS refl t : Id A t u|.
@@ -109,14 +111,29 @@ The set of natural numbers is \emph{inductively defined}.
 \begin{itemize}
 
 \item Elimination:
-\[ \AXC{|Gamma ENTAILS P : A -> U|} \AXC{|Gamma ENTAILS p : P t|} \AXC{|Gamma ENTAILS q : Id A t u|}
-\rule{$\equiv$E}\TIC{|Gamma ENTAILS transport P p q : P u|} \DP \]
+\[ \Axiom$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS P : A -> U| \\
+|Gamma ENTAILS t : A| \\
+|Gamma ENTAILS p : P t| \\
+|Gamma ENTAILS u : A| \\
+|Gamma ENTAILS q : Id A t u|
+\end{tabular}$
+\rule{|Id|E}\UnaryInf$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS transport P p q : P u|
+\end{tabular}$ \DP \]
 
 \item Computation:
-\[ \AXC{|Gamma ENTAILS P : A -> U|} \AXC{|Gamma ENTAILS p : P t|}
-\rule{$\equiv$C}\BIC{|Gamma ENTAILS transport P p (refl t) = p IN P t|} \DP \]
+\[ \AXC{|Gamma ENTAILS P : A -> U|} \AXC{|Gamma ENTAILS t : A|} \AXC{|Gamma ENTAILS p : P t|}
+\rule{|Id|C}\TIC{|Gamma ENTAILS transport P p (refl t) = p IN P t|} \DP \]
 
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}{|Id| is an equivalence relation}
+
+|Id| is obviously reflexive --- we can derive
+\[ |ENTAILS \A BIND SKIP \x BIND refl x : (Pi A U) (Pi x A) Id A x x| \]
 
 \marker{Exercise} Prove that |Id| is symmetric and transitive, i.e.,
 \[ |(Pi A U) (Pi x A) (Pi y A) Id A x y -> Id A y x| \]
@@ -140,7 +157,7 @@ and
 |Gamma ENTAILS u : A| \\
 |Gamma ENTAILS q : Id A t u|
 \end{tabular}$
-\rule{$\equiv$E}\UnaryInf$\fCenter\begin{tabular}{l}
+\rule{|Id|E}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS J P p q : P u q|
 \end{tabular}$ \DP \]
 
@@ -150,7 +167,7 @@ and
 |Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
 |Gamma ENTAILS p : P t SKIP (refl t)|
 \end{tabular}$
-\rule{$\equiv$C}\UnaryInf$\fCenter\begin{tabular}{l}
+\rule{|Id|C}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS J P p SKIP (refl t) = p IN P t SKIP (refl t)|
 \end{tabular}$ \DP \]
 
@@ -201,6 +218,18 @@ and
 \quad --- The elimination rule.
 
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Computational foundation}
+
+In type theory, Peano ``axioms'' are merely consequences, and do not really play an important role.
+
+We now have a more natural foundation based on the idea of typed computation.
+
+The infamous proof of |1 + 1 {-"\kern-.75pt"-} = 2|
+\[ \includegraphics[width=.95\textwidth]{one-plus-one-equals-two.pdf} \]
+is entirely reduced to computation in type theory.
 
 \end{frame}
 

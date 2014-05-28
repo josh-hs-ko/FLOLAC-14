@@ -300,6 +300,8 @@ Introduction rules specify \emph{canonical} --- or \emph{immediately recognisabl
 
 A complex construction may not be immediately recognisable as belonging to a set, but as long as we can see that it \emph{computes} to a canonical element, we accept it as a \emph{non-canonical} element of the set.
 
+(It follows that all computations in type theory must terminate.)
+
 \varmarker{Property}{canonicity} If |ENTAILS t : A|, then |ENTAILS t = c IN A| for some canonical element~|c|.
 
 \end{frame}
@@ -323,7 +325,7 @@ derive
 
 \begin{frame}{Classical logic as an extension of intuitionistic logic}
 
-By including the LEM rule, our logic system can now derive intuitionistically invalid but classically valid propositions.
+By including the LEM rule, our logic system can now derive intuitionistically unprovable but classically provable propositions.
 
 The LEM rule breaks canonicity, however (why?) --- the system is no longer computationally meaningful.
 
@@ -339,7 +341,7 @@ The \emph{Gödel--Gentzen negative translation} embeds classical logic into intu
 \item representing disjunction by `|NEG (NEG {-"\text\ldots\kern1pt"-} TIMES NEG {-"\kern3pt\text\ldots"-})|'.
 \end{itemize}
 
-Via this embedding, every classically valid proposition can be proved in intuitionistic logic.
+A proposition is classically provable if and only if its Gödel--Gentzen negative translation is intuitionistically provable.
 
 \marker{Exercise} Let |Gamma DEFEQ A : U, a : A, D : A -> U|. (Note that |A|~is an inhabited set.) Derive
 \[ |Gamma ENTAILS _ : NEG (Pi x A) NEG (NEG NEG D x -> (Pi y A) NEG NEG D y)| \]

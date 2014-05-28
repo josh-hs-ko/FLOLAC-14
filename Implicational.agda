@@ -1,12 +1,10 @@
 module Implicational where
 
-open import Data.String
-open import Relation.Binary.PropositionalEquality
-open import Relation.Binary.HeterogeneousEquality using () renaming (_≅_ to _≃_; refl to hrefl; trans to htrans; ≡-to-≅ to ≡-to-≃)
-
 
 --------
 -- prelude
+
+open import Data.String
 
 record Σ (A : Set) (B : A → Set) : Set where
   constructor _,_
@@ -61,8 +59,8 @@ if_then_else_ : {A : Set} → Bool → A → A → A
 if false then x else y = x
 if true  then x else y = y
 
--- data _≡_ {A : Set} (x : A) : A → Set where
---   refl : x ≡ x
+data _≡_ {A : Set} (x : A) : A → Set where
+  refl : x ≡ x
 
 
 --------

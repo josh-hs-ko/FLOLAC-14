@@ -24,6 +24,7 @@
 %format PRIME = "\mkern-\medmuskip^\prime"
 %format 0 = "\mathsf 0"
 %format 1 = "\mathsf 1"
+%format 2 = "\mathsf 2"
 
 %format : = "\relation{:}"
 %format :: = "\relation{::}"
