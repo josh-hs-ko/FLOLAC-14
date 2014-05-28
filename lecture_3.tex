@@ -40,9 +40,9 @@
 \item Elimination:
 \[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-|Gamma ENTAILS n : Nat|
+|Gamma ENTAILS {-"\rlap{"-} z {-"}\phantom{"-}P{-"}"-} : P SKIP zero| \\
+|Gamma ENTAILS {-"\rlap{"-} s {-"}\phantom{"-}P{-"}"-} : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS {-"\rlap{"-} n {-"}\phantom{"-}P{-"}"-} : Nat|
 \end{tabular}$
 \rule{|Nat|E}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS ind P z s n : P n|
@@ -60,8 +60,8 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 \item Computation:
 \[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS {-"\rlap{"-} z {-"}\phantom{"-}P{-"}"-} : P SKIP zero| \\
+|Gamma ENTAILS {-"\rlap{"-} s {-"}\phantom{"-}P{-"}"-} : (Pi x Nat) P x -> P (suc x)| \\
 \end{tabular}$
 \rule{|Nat|CZ}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS ind P z s SKIP zero = z IN P SKIP zero|
@@ -69,9 +69,9 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 
 \[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : Nat -> U| \\
-|Gamma ENTAILS z : P SKIP zero| \\
-|Gamma ENTAILS s : (Pi x Nat) P x -> P (suc x)| \\
-|Gamma ENTAILS n : Nat|
+|Gamma ENTAILS {-"\rlap{"-} z {-"}\phantom{"-}P{-"}"-} : P SKIP zero| \\
+|Gamma ENTAILS {-"\rlap{"-} s {-"}\phantom{"-}P{-"}"-} : (Pi x Nat) P x -> P (suc x)| \\
+|Gamma ENTAILS {-"\rlap{"-} n {-"}\phantom{"-}P{-"}"-} : Nat|
 \end{tabular}$
 \rule{|Nat|CS}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS ind P z s (suc n) = s n (ind P z s n) IN P (suc n)|
@@ -83,15 +83,21 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 
 \end{frame}
 
-\begin{frame}{Induction principle}
+\begin{frame}{Inductively defined sets}
 
 The set of natural numbers is \emph{inductively defined}.
+
+In general, every element of an inductively defined set is recursively constructed in a finite number of steps.
+
+Accompanying every inductively defined set is an induction principle, which says that the recursive structure of an element can guide computation, and is formulated as elimination and computation rules in type theory.
+
+In Agda, every datatype can be thought of as being inductively defined, and a structurally recursive function on a datatype (usually using pattern matching) can be thought of as syntactic sugar for an invocation of its induction principle.
 
 \end{frame}
 
 \begin{frame}{Identity types}
 
-\emph{Identity types} are also called \emph{propositional equality}, especially when drawing contrast with judgemental equality.
+\emph{Identity types} are also called \emph{propositional equality}, especially when contrasted with judgemental equality.
 
 \begin{itemize}
 \item Formation:
@@ -113,10 +119,10 @@ The set of natural numbers is \emph{inductively defined}.
 \item Elimination:
 \[ \Axiom$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS P : A -> U| \\
-|Gamma ENTAILS t : A| \\
-|Gamma ENTAILS p : P t| \\
-|Gamma ENTAILS u : A| \\
-|Gamma ENTAILS q : Id A t u|
+|Gamma ENTAILS {-"\rlap{"-} t {-"}\phantom{"-}P{-"}"-} : A| \\
+|Gamma ENTAILS {-"\rlap{"-} p {-"}\phantom{"-}P{-"}"-} : P t| \\
+|Gamma ENTAILS {-"\rlap{"-} u {-"}\phantom{"-}P{-"}"-} : A| \\
+|Gamma ENTAILS {-"\rlap{"-} q {-"}\phantom{"-}P{-"}"-} : Id A t u|
 \end{tabular}$
 \rule{|Id|E}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS transport P p q : P u|
@@ -127,6 +133,12 @@ The set of natural numbers is \emph{inductively defined}.
 \rule{|Id|C}\TIC{|Gamma ENTAILS transport P p (refl t) = p IN P t|} \DP \]
 
 \end{itemize}
+
+\marker{Exercise} Prove
+\begin{align*}
+& |(Pi A U) (Pi B U) (Pi f (A -> B))| \\
+& \quad |(Pi x A) (Pi y A) Id A x y -> Id B (f x) (f y)|
+\end{align*}
 
 \end{frame}
 
@@ -151,11 +163,11 @@ and
 
 \item Elimination:
 \[ \Axiom$\fCenter\begin{tabular}{l}
-|Gamma ENTAILS t : A| \\
+|Gamma ENTAILS {-"\rlap{"-} t {-"}\phantom{"-}P{-"}"-} : A| \\
 |Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
-|Gamma ENTAILS p : P t SKIP (refl t)| \\
-|Gamma ENTAILS u : A| \\
-|Gamma ENTAILS q : Id A t u|
+|Gamma ENTAILS {-"\rlap{"-} p {-"}\phantom{"-}P{-"}"-} : P t SKIP (refl t)| \\
+|Gamma ENTAILS {-"\rlap{"-} u {-"}\phantom{"-}P{-"}"-} : A| \\
+|Gamma ENTAILS {-"\rlap{"-} q {-"}\phantom{"-}P{-"}"-} : Id A t u|
 \end{tabular}$
 \rule{|Id|E}\UnaryInf$\fCenter\begin{tabular}{l}
 |Gamma ENTAILS J P p q : P u q|
@@ -223,13 +235,13 @@ and
 
 \begin{frame}{Computational foundation}
 
-In type theory, Peano ``axioms'' are merely consequences, and do not really play an important role.
+In type theory, Peano ``axioms'' (formulated as propositions) are merely consequences, and do not play an important role in actual theorem proving.
 
-We now have a more natural foundation based on the idea of typed computation.
+We now have a more natural foundation of mathematics based on the idea of typed computation.
 
 The infamous proof of |1 + 1 {-"\kern-.75pt"-} = 2|
 \[ \includegraphics[width=.95\textwidth]{one-plus-one-equals-two.pdf} \]
-is entirely reduced to computation in type theory.
+is just an automatic check by computation in type theory.
 
 \end{frame}
 

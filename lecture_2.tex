@@ -122,9 +122,9 @@ We thus need to introduce a \emph{predicative} hierarchy of universes |U(sub 0)|
 
 \end{frame}
 
-\begin{frame}{Universe polymorphism}
+\begin{frame}{Universe polymorphism and typical ambiguity}
 
-Formation rules and elimination rules have to be revised to work across the universe hierarchy.
+Formation rules and elimination rules have to be revised to be \emph{universe-polymorphic}.
 
 \begin{itemize}
 
@@ -140,7 +140,7 @@ for which we implicitly assume the following judgements:
 
 \end{itemize}
 
-In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred most of the time.
+In practice, however, we can drop the indices (as if assuming |U : U|) because they can be inferred most of the time. (This is called \emph{typical ambiguity}.)
 
 \end{frame}
 
@@ -151,7 +151,9 @@ Try to derive
 \[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> (Pi x A) B x -> C x| \]
 \ldots\ and you should notice some problems.
 
-So far we have been concentrating on the \emph{statics} of type theory; here we need to formally invoke the \emph{dynamics} of the theory.
+So far we have been concentrating on the \emph{statics} of type theory --- how to match program structure with type structure.
+
+Here we need to invoke the \emph{dynamics} of type theory --- how to \emph{reduce} (rewrite) programs to other programs.
 
 \end{frame}
 
@@ -237,13 +239,13 @@ We need a congruence rule for each constant we introduce:
 Judgemental equality is an equivalence relation.
 
 \[ \AXC{|Gamma ENTAILS t : A|}
-\rule{refl}\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
+\UIC{|Gamma ENTAILS t = t IN A|} \DP \]
 
 \[ \AXC{|Gamma ENTAILS t = u IN A|}
-\rule{sym}\UIC{|Gamma ENTAILS u = t IN A|} \DP \]
+\UIC{|Gamma ENTAILS u = t IN A|} \DP \]
 
 \[ \AXC{|Gamma ENTAILS t = u IN A|} \AXC{|Gamma ENTAILS u = v IN A|}
-\rule{trans}\BIC{|Gamma ENTAILS t = v IN A|} \DP \]
+\BIC{|Gamma ENTAILS t = v IN A|} \DP \]
 
 \end{frame}
 
@@ -288,7 +290,7 @@ Our judgemental equality is \emph{decidable}: for any equality judgement we can 
 
 (As a consequence, typechecking is also decidable.)
 
-Decidability is achieved by \emph{reducing} terms to their \emph{normal forms} and see if the normal forms match.
+Decidability is achieved by reducing terms to their \emph{normal forms} and see if the normal forms match.
 
 There are various \emph{reduction strategies}, and judgemental equality is formulated without reference to any particular reduction strategy --- it captures the notion of computation only abstractly.
 
@@ -300,7 +302,7 @@ Introduction rules specify \emph{canonical} --- or \emph{immediately recognisabl
 
 A complex construction may not be immediately recognisable as belonging to a set, but as long as we can see that it \emph{computes} to a canonical element, we accept it as a \emph{non-canonical} element of the set.
 
-(It follows that all computations in type theory must terminate.)
+\marker{Remark} It follows that all computations in type theory must terminate, because from a non-canonical proof we should be able to get a canonical one in finite time.
 
 \varmarker{Property}{canonicity} If |ENTAILS t : A|, then |ENTAILS t = c IN A| for some canonical element~|c|.
 
@@ -329,7 +331,7 @@ By including the LEM rule, our logic system can now derive intuitionistically un
 
 The LEM rule breaks canonicity, however (why?) --- the system is no longer computationally meaningful.
 
-We are actually abusing the intuitionistic system to state classical facts, though --- classical disjunction and existence are semantically weaker than their intuitionistic counterparts.
+We are actually abusing the intuitionistic system, though: classical disjunction and existence are semantically weaker than their intuitionistic counterparts, so naively using the latter to state classical facts does not really make much sense.
 
 \end{frame}
 

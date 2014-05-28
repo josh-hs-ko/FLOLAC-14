@@ -55,10 +55,10 @@ cong = {!!}
 --------
 -- Peano axioms
 
-suc-functional : {A : Set} {x y : ℕ} → x ≡ y → suc x ≡ suc y
+suc-functional : {x y : ℕ} → x ≡ y → suc x ≡ suc y
 suc-functional = {!!}
 
-suc-injective : {A : Set} {x y : ℕ} → suc x ≡ suc y → x ≡ y
+suc-injective : {x y : ℕ} → suc x ≡ suc y → x ≡ y
 suc-injective = {!!}
 
 data ⊤ : Set where
@@ -69,7 +69,7 @@ data ⊥ : Set where
 zero-suc-disjoint : (x : ℕ) → suc x ≡ zero → ⊥
 zero-suc-disjoint = {!!}  -- hint: use ind₁ (instead of ind)
 
--- the following six propositions should be automatically typechecked if you define addition and multiplication correctly
+-- the following six propositions should automatically pass typecheck if your definitions of addition and multiplication are correct
 
 add-first-equation : (x : ℕ) → zero + x ≡ x
 add-first-equation x = refl
@@ -88,6 +88,11 @@ mult-second-equation x y = refl
 
 2*2≡4 : suc (suc zero) * suc (suc zero) ≡ suc (suc (suc (suc zero)))
 2*2≡4 = refl
+
+-- an alternative proof of 1 + 1 ≡ 2 purely using the Peano axioms (instead of invoking computation)
+
+1+1≡2' : suc zero + suc zero ≡ suc (suc zero)
+1+1≡2' = trans (add-second-equation zero (suc zero)) (suc-functional (add-first-equation (suc zero)))
 
 
 --------
@@ -124,7 +129,7 @@ add-comm = {!!}
    which can be proved separately.
 -}
 
--- multiplication left-distributives over addition
+-- multiplication left-distributes over addition
 
 left-distr : (x y z : ℕ) → x * (y + z) ≡ x * y + x * z
 left-distr = {!!}
@@ -134,7 +139,7 @@ left-distr = {!!}
 mult-comm : (x y : ℕ) → x * y ≡ y * x
 mult-comm = {!!}
 
--- multiplication right-distributives over addition
+-- multiplication right-distributes over addition
 
 right-distr : (x y z : ℕ) → (x + y) * z ≡ x * z + y * z
 right-distr = {!!}

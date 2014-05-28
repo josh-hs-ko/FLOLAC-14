@@ -55,13 +55,13 @@ cong f {x} {y} = transport (λ z → f x ≡ f z) refl
 --------
 -- Peano axioms
 
-suc-functional : {A : Set} {x y : ℕ} → x ≡ y → suc x ≡ suc y
+suc-functional : {x y : ℕ} → x ≡ y → suc x ≡ suc y
 suc-functional = cong (λ z → suc z)
 
 pred : ℕ → ℕ
 pred = ind (λ _ → ℕ) zero (λ n _ → n)
 
-suc-injective : {A : Set} {x y : ℕ} → suc x ≡ suc y → x ≡ y
+suc-injective : {x y : ℕ} → suc x ≡ suc y → x ≡ y
 suc-injective = cong pred
 
 data ⊤ : Set where
@@ -89,6 +89,11 @@ mult-second-equation x y = refl
 
 2*2≡4 : suc (suc zero) * suc (suc zero) ≡ suc (suc (suc (suc zero)))
 2*2≡4 = refl
+
+-- an alternative proof of 1 + 1 ≡ 2 purely using the Peano axioms (instead of invoking computation)
+
+1+1≡2' : suc zero + suc zero ≡ suc (suc zero)
+1+1≡2' = trans (add-second-equation zero (suc zero)) (suc-functional (add-first-equation (suc zero)))
 
 
 --------
@@ -198,7 +203,7 @@ add-comm (suc x) y =
       ≡[ add-suc y x ]
   y + suc x ∎
 
--- multiplication left-distributives over addition
+-- multiplication left-distributes over addition
 
 left-distr : (x y z : ℕ) → x * (y + z) ≡ x * y + x * z
 left-distr zero    y z =
@@ -278,7 +283,7 @@ mult-comm (suc x) y =
       ≡[ refl ]
   y * suc x ∎
 
--- multiplication right-distributives over addition
+-- multiplication right-distributes over addition
 
 right-distr : (x y z : ℕ) → (x + y) * z ≡ x * z + y * z
 right-distr x y z =

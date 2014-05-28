@@ -28,6 +28,12 @@ In this case we call the former  the \emph{object language}, and the latter the 
 
 What we write down as types and programs are nothing more than certain syntax trees by themselves; then, at a higher level, we organise and relate these syntax trees with judgements and derivations.
 
+For example, equality judgements are a meta-theoretic notion and cannot be used inside the theory to state equations as provable propositions --- we need identity types instead.
+
+\end{frame}
+
+\begin{frame}{Type theory should eat itself}
+
 Judgements and derivations can also be regarded as syntax trees to be reasoned about.
 For example, consistency is a statement in which judgements and derivations are the object language and English is the meta-language.
 (Canonicity is another example.)
@@ -40,7 +46,7 @@ We can also use Agda as the meta-language!
 
 Today we consider only propositions formed with implication.
 
-Each of these propositions is a finite tree whose internal nodes are implications and whose leaves are atomic propositions, which are elements of a given set |V = { A, B, C, {-"\text\ldots"-} }|.
+Each of these propositions is a finite tree whose internal nodes are implications and whose leaves are atomic propositions, which are elements of a given set |Var = { A, B, C, {-"\text\ldots"-} }|.
 
 \marker{Example} The proposition |(A -> B -> C) -> (A -> C) -> B -> C| is represented as
 \[
@@ -107,6 +113,26 @@ We can use the implicational fragement of propositional logic as a type language
 
 \end{frame}
 
+\addtocounter{framenumber}{-1}
+
+\begin{frame}
+
+\begin{center}
+
+\vspace*{\fill}
+
+\includegraphics[height=200pt]{curry-mario.png}
+
+\color{OxfordOlive}\LARGE Haskell Curry
+
+\vspace*{\fill}
+
+\tiny\color{gray} picture stolen from \url{http://bodil.org/hipster}
+
+\end{center}
+
+\end{frame}
+
 \begin{frame}{Curry--Howard isomorphism}
 
 Derivations in natural deduction and well-typed $\lambda$-terms are in one-to-one correspondence.
@@ -127,6 +153,46 @@ This result is historically significant: two formalisms are developed separately
 The Curry--Howard isomorphism points out that derivations in natural deduction are actually $\lambda$-terms in disguise.
 
 These $\lambda$-terms are intrinsically typed, so every term we are able to write down is necessarily well-behaved, whereas in simply typed $\lambda$-calculus à~la Curry, we can write arbitrary $\lambda$-terms, and only rule out ill-behaved ones via typing later.
+
+\end{frame}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}
+
+\begin{center}
+
+\vspace*{\fill}
+
+\includegraphics[height=200pt]{church-luigi.png}
+
+\color{OxfordOlive}\LARGE Alonzo Church
+
+\vspace*{\fill}
+
+\tiny\color{gray} picture stolen from \url{http://bodil.org/hipster}
+
+\end{center}
+
+\end{frame}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}
+
+\begin{center}
+
+\vspace*{\fill}
+
+\includegraphics[height=200pt]{church-curry.png}
+
+\color{OxfordOlive}\LARGE The Curry--Howard isomorphism
+
+\vspace*{\fill}
+
+\tiny\color{gray} picture stolen from \url{http://bodil.org/hipster}
+
+\end{center}
 
 \end{frame}
 
@@ -173,7 +239,7 @@ In the case of propositional logic, we can translate propositional trees to func
 
 \end{frame}
 
-\begin{frame}{Deduction systems and semantics}
+\begin{frame}{Relationship between deduction systems and semantics}
 
 Natural deduction is \emph{sound} with respect to the two-valued semantics: whenever we can deduce $|Gamma| \vdash |p|$, it must be the case that $|Gamma| \models |p|$.
 

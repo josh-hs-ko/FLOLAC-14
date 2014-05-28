@@ -29,7 +29,6 @@ swap{-"~"-}  =   {-"~"-}\p -> (snd' p, fst' p)
 \end{code}
 How do we explain that the program is type-correct?
 
-\small
 The function |swap| is from |(a, b)| to |(b, a)|.
 Assume that we have an input~|p| of type |(a, b)|; we need to construct a term of type |(b, a)|.
 To do so, we need to construct a term of type |b| and another term of type |a|, and pair them together.
@@ -128,10 +127,10 @@ The dependently typed programming language Agda is theoretically based on MLTT.
 \begin{frame}{Sets}
 
 Activities in type theory consist of construction of elements of various \emph{sets} (which we regard as synonymous with ``types'').
-\begin{itemize}
-\item Note that element construction includes proving logical propositions (when we regard sets as propositions) and carrying out general mathematical constructions (e.g., constructing functions of type |Nat -> Nat|).
-\item In these lectures we will mainly focus on sets that have a logical interpretation.
-\end{itemize}
+
+Note that element construction includes proving logical propositions (when we regard sets as propositions) and carrying out general mathematical constructions (e.g., constructing functions of type |Nat -> Nat|).
+
+In these lectures we will mainly focus on sets that have a logical interpretation.
 
 Specification of sets is thus the central part of type theory.
 
@@ -154,7 +153,7 @@ In a typing judgement |Gamma|~|ENTAILS|~|t : S|, the context~|Gamma| can be empt
 \end{frame}
 
 \begin{frame}{Set of sets}
-We assume that there is a set of sets named~|U|, so when we write down, for example, |Gamma|~|ENTAILS|~|A : U|, this states that |A|~is a set under the assumptions in~|Gamma|.
+We assume that there is a set of sets named~|U| (for ``universe''), so when we write down, for example, |Gamma|~|ENTAILS|~|A : U|, this states that |A|~is a set under the assumptions in~|Gamma|.
 
 Whenever we write down a typing judgement, we require that the expressions appearing on the right of all the colons in the judgement are already judged to be sets.
 
@@ -192,11 +191,11 @@ which has a \emph{side condition} that |x : S| appears in~|Gamma|.
 Today, we give three kinds of rules for specifying each set:
 \begin{itemize}
 \item \emph{Formation rule} --- what constitute the name of the set.
-\item \emph{Introduction rule(s)} --- how to construct \emph{canonical} elements of the set.
+\item \emph{Introduction rule(s)} --- how to construct (canonical) elements of the set.
 \item \emph{Elimination rule(s)} --- how to deconstruct elements of the set and transform them to elements of some other sets.
 \end{itemize}
 
-(More to come tomorrow.)
+(One more kind of rules to come tomorrow.)
 
 \end{frame}
 
