@@ -197,15 +197,16 @@ Peano axioms specify an \emph{equational theory} of natural number arithmetic; a
 
 \quad --- The introduction rules.
 
-\item Equality on natural numbers is an equivalence relation; that is, it is reflexive, transitive, and symmetric.
+\item Equality on natural numbers is an equivalence relation.
 
-\quad --- We use |Id|, which indeed satisfies the above properties.
+\quad --- We use |Id|, which has been proved to be an equivalence\\
+\quad\phantom{---} relation.
 
 \item The successor operation is an injective function, i.e.,
 \[ |(Pi m Nat) (Pi n Nat) Id Nat m n <-> Id Nat (suc m) (suc n)| \]
 
 \item The successor operation never yields zero, i.e.,
-\[ |(Pi n Nat) Id Nat (suc n) zero -> BOT| \]
+\[ |(Pi n Nat) NEG Id Nat (suc n) zero| \]
 
 \end{itemize}
 
