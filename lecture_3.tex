@@ -163,24 +163,24 @@ and
 
 \item Elimination:
 \[ \Axiom$\fCenter\begin{tabular}{l}
+|Gamma ENTAILS P : (Pi x A) (Pi y A) Id A x y -> U| \\
+|Gamma ENTAILS {-"\rlap{"-} p {-"}\phantom{"-}P{-"}"-} : (Pi z A) P z z SKIP (refl z)| \\
 |Gamma ENTAILS {-"\rlap{"-} t {-"}\phantom{"-}P{-"}"-} : A| \\
-|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
-|Gamma ENTAILS {-"\rlap{"-} p {-"}\phantom{"-}P{-"}"-} : P t SKIP (refl t)| \\
 |Gamma ENTAILS {-"\rlap{"-} u {-"}\phantom{"-}P{-"}"-} : A| \\
 |Gamma ENTAILS {-"\rlap{"-} q {-"}\phantom{"-}P{-"}"-} : Id A t u|
 \end{tabular}$
 \rule{|Id|E}\UnaryInf$\fCenter\begin{tabular}{l}
-|Gamma ENTAILS J P p q : P u q|
+|Gamma ENTAILS J P p q : P t u q|
 \end{tabular}$ \DP \]
 
 \item Computation:
 \[ \Axiom$\fCenter\begin{tabular}{l}
-|Gamma ENTAILS t : A| \\
-|Gamma ENTAILS P : (Pi x A) Id A t x -> U| \\
-|Gamma ENTAILS p : P t SKIP (refl t)|
+|Gamma ENTAILS P : (Pi x A) (Pi y A) Id A x y -> U| \\
+|Gamma ENTAILS {-"\rlap{"-} p {-"}\phantom{"-}P{-"}"-} : (Pi z A) P z z SKIP (refl z)| \\
+|Gamma ENTAILS {-"\rlap{"-} t {-"}\phantom{"-}P{-"}"-} : A|
 \end{tabular}$
 \rule{|Id|C}\UnaryInf$\fCenter\begin{tabular}{l}
-|Gamma ENTAILS J P p SKIP (refl t) = p IN P t SKIP (refl t)|
+|Gamma ENTAILS J P p SKIP (refl t) = p t IN P t t SKIP (refl t)|
 \end{tabular}$ \DP \]
 
 \end{itemize}
