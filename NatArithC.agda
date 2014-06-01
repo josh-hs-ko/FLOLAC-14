@@ -133,7 +133,7 @@ add-assoc (suc x) y z =
       ≡[ refl ]
   (suc x) + (y + z) ∎
 
--- an alternative proof of associativity of addition which exlicitly invokes the induction principle
+-- an alternative proof of associativity of addition which explicitly invokes the induction principle
 
 add-assoc' : (x y z : ℕ) → (x + y) + z ≡ x + (y + z)
 add-assoc' x y z = ind (λ w → (w + y) + z ≡ w + (y + z)) base-case ind-case x
