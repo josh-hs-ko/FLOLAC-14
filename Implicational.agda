@@ -198,8 +198,8 @@ validity-exercise = {!!}
 validity-implies-semantic-consequence : (p : PROP) → Valid p → [] ⊧ p
 validity-implies-semantic-consequence = {!!}
 
-semantic-implies-consequence-validity : (p : PROP) → [] ⊧ p → Valid p
-semantic-implies-consequence-validity = {!!}
+semantic-consequence-implies-validity : (p : PROP) → [] ⊧ p → Valid p
+semantic-consequence-implies-validity = {!!}
 
 -- soundness
 

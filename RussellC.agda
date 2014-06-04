@@ -10,6 +10,7 @@ open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
 
 -- a set is an indexed collection of elements, which are themselves sets
+-- this declaration is rejected if the --type-in-type option is not given
 data U : Set where
   set : (I : Set) → (I → U) → U
 
