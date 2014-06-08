@@ -36,7 +36,7 @@ if_then_else_ : {A B C : Set} → A ⊎ B → ({{_ : A}} → C) → ({{_ : B}} �
 if inj₁ a then t else u = t
 if inj₂ b then t else u = u
 
-attach' : {x y : V} {r : Nat} → BTree x r → BTree y r → Σ[ z ∶ V ] BTree z (suc r)
+attach' : {x y : V} {r : Nat} → BTree x r → BTree y r → Σ[ z ∈ V ] BTree z (suc r)
 attach' {x} {y} (node a ts) (node b us) = if a ≤? b then (x , node a (node b us , ts)) else (y , node b (node a ts , us))
 
 attach : {x y : V} {r : Nat} (t : BTree x r) (u : BTree y r) → BTree (proj₁ (attach' t u)) (suc r)
