@@ -89,7 +89,7 @@ A $\lambda$-term is either a variable, an abstraction, or an application.
 
 We usually assume \emph{$\alpha$-equivalence} of $\lambda$-terms, i.e., the names of \emph{bound variables} do not matter.
 \begin{itemize}
-\item Change of bound variable names is called $\alpha$-conversion, which has to be \emph{capture-avoiding}, i.e., \emph{free variables} must not become bound after a name change.
+\item Change of bound variable names is called \emph{$\alpha$-conversion}, which has to be \emph{capture-avoiding}, i.e., \emph{free variables} must not become bound after a name change.
 \item In formalisation, we prefer not to deal with $\alpha$-equivalence explicitly, and one way is to use \emph{de~Bruijn indices} --- $\lambda$'s are nameless, and a bound variable is represented as a natural number indicating to which~$\lambda$ it is bound.
 \end{itemize}
 
@@ -167,6 +167,26 @@ These $\lambda$-terms are intrinsically typed, so every term we are able to writ
 \includegraphics[height=200pt]{church-luigi.png}
 
 \color{OxfordOlive}\LARGE Alonzo Church
+
+\vspace*{\fill}
+
+\tiny\color{gray} picture stolen from \url{http://bodil.org/hipster}
+
+\end{center}
+
+\end{frame}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}
+
+\begin{center}
+
+\vspace*{\fill}
+
+\includegraphics[height=200pt]{church-curry.png}
+
+\color{OxfordOlive}\LARGE Super lambda bros.
 
 \vspace*{\fill}
 

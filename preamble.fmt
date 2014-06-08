@@ -90,10 +90,11 @@
 
 \usepackage{graphicx}
 
-\useinnertheme{rectangles}
-\usecolortheme{whale}
-\usecolortheme{orchid}
-% \useoutertheme[footline=authortitle]{miniframes}
+\mode<article>{
+  \useinnertheme{rectangles}
+  \usecolortheme{whale}
+  \usecolortheme{orchid}
+}
 
 \definecolor{OxfordBlue}{RGB}{0,33,71}
 \definecolor{OxfordMidBlue}{RGB}{75,146,219}
@@ -129,6 +130,7 @@
 \newcommand{\marker}[1]{\textbf{\color{OxfordBlue}#1.}~}
 \newcommand{\varmarker}[2]{{\color{OxfordBlue}\textbf{#1} (#2)\textbf.}~}
 
+\mode<presentation>{%
 \defbeamertemplate*{title page}{customised}[1][]
 {
   \vskip16ex
@@ -145,15 +147,15 @@
   \par
 }
 
-\mode<presentation>{%
 \setbeamertemplate{frametitle}
 {\vskip.15cm
 \hbox{\begin{beamercolorbox}[wd=\paperwidth,sep=.5cm]{frametitle}\usebeamerfont{frametitle}\insertframetitle\end{beamercolorbox}}\vskip-.45cm
-}}
+}
 
 \beamertemplatenavigationsymbolsempty
 \setbeamertemplate{footline}{\hfill{\color[gray]{.4}\fontsize{8pt}{0pt}\selectfont\lectureno-\insertframenumber}\kern1.25em\vskip2.5ex}
 \setbeamertemplate{headline}{}
+}
 
 \usepackage{enumitem}
 \setlistdepth{9}
