@@ -38,7 +38,7 @@ Symmetrically, |fst' p| can be used as the second term.
 
 \begin{frame}{Typing derivation}
 
-The reasoning can be formalised as the following \emph{typing derivation}:
+The reasoning can be formalised as the following \emph{typing derivation}:\qquad\null
 \abovedisplay
 \[ \AXC{}
 \rule{var}\UIC{|p :: (a, b) ENTAILS p :: (a, b)|}
@@ -63,15 +63,15 @@ Why formalise?
 
 We can also read it as a logical derivation of the proposition ``|a|~and~|b| ~implies~ |b|~and~|a|'':
 \abovedisplay
-\[ \hskip-.5em
+\[
 \AXC{}
-\rule{assum}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(p ::)) (a, b)|}
-\rule{$\wedge$ER}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(snd' p ::)) b|}
+\RightLabel{\footnotesize\rlap{(assum)}\phantom{(var)}}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(p ::)) (a, b)|}
+\RightLabel{\footnotesize\rlap{($\wedge$ER)}\phantom{(snd)}}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(snd' p ::)) b|}
 \AXC{}
-\rule{assum}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(p ::)) (a, b)|}
-\rule{$\wedge$EL}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(fst' p ::)) a|}
-\rule{$\wedge$I}\BIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight((snd' p, fst' p) ::)) (b, a)|}
-\rule{$\to$I}\UIC{|ENTAILS (dehighlight(\p -> (snd' p, fst' p) ::)) (a, b) -> (b, a)|}
+\RightLabel{\footnotesize\rlap{(assum)}\phantom{(var)}}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(p ::)) (a, b)|}
+\RightLabel{\footnotesize\rlap{($\wedge$ER)}\phantom{(fst)}}\UIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight(fst' p ::)) a|}
+\RightLabel{\footnotesize\rlap{($\wedge$I)}\phantom{(pair)}}\BIC{|(dehighlight(p ::)) (a, b) ENTAILS (dehighlight((snd' p, fst' p) ::)) (b, a)|}
+\RightLabel{\footnotesize\rlap{($\to$I)}\phantom{(abs)}}\UIC{|ENTAILS (dehighlight(\p -> (snd' p, fst' p) ::)) (a, b) -> (b, a)|}
 \DP \]
 
 This is Gentzen's \emph{natural deduction} system, in which only the ``type part'' is present.
