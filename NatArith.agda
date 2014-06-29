@@ -16,6 +16,9 @@ ind₁ : (P : ℕ → Set₁) → P zero → ((n : ℕ) → P n → P (suc n)) �
 ind₁ P z s zero    = z
 ind₁ P z s (suc n) = s n (ind₁ P z s n)
 
+pred : ℕ → ℕ
+pred = {!!}
+
 infixr 5 _+_
 
 _+_ : ℕ → ℕ → ℕ

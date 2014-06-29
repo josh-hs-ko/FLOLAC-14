@@ -16,6 +16,9 @@ ind₁ : (P : ℕ → Set₁) → P zero → ((n : ℕ) → P n → P (suc n)) �
 ind₁ P z s zero    = z
 ind₁ P z s (suc n) = s n (ind₁ P z s n)
 
+pred : ℕ → ℕ
+pred = ind (λ _ → ℕ) zero (λ n _ → n)
+
 infixr 5 _+_
 
 _+_ : ℕ → ℕ → ℕ
@@ -57,9 +60,6 @@ cong f {x} {y} = transport (λ z → f x ≡ f z) refl
 
 suc-functional : {x y : ℕ} → x ≡ y → suc x ≡ suc y
 suc-functional = cong (λ z → suc z)
-
-pred : ℕ → ℕ
-pred = ind (λ _ → ℕ) zero (λ n _ → n)
 
 suc-injective : {x y : ℕ} → suc x ≡ suc y → x ≡ y
 suc-injective = cong pred

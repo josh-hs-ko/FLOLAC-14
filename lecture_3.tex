@@ -79,8 +79,6 @@ Logically this is the \emph{induction principle}; computationally this is \emph{
 
 \end{itemize}
 
-\marker{Exercise} Define addition and multiplication with |ind|.
-
 \end{frame}
 
 \begin{frame}{Inductively defined sets}
@@ -92,6 +90,8 @@ In general, every element of an inductively defined set is recursively construct
 Accompanying every inductively defined set is an induction principle, which says that the recursive structure of an element can guide computation, and is formulated as elimination and computation rules in type theory.
 
 In Agda, every datatype can be thought of as being inductively defined, and a structurally recursive function on a datatype (usually using pattern matching) can be thought of as syntactic sugar for an invocation of its induction principle.
+
+\marker{Exercise} Define predecessor, addition, and multiplication with |ind|.
 
 \end{frame}
 
