@@ -14,6 +14,9 @@ $(lectures):
 	pdf90 lectures-4up.pdf --outfile TT_lectures_4up.pdf
 	rm -f *-4up.pdf
 
+notes: $(lectures:=.pdf)
+	pdfjam --nup 1x4 --frame true --suffix 'notes' --scale .95 --delta "0cm .25cm" --offset "-5.25cm 0cm" --batch $(lectures:=.pdf)
+
 exam:
 	$(lhs2TeX) exam.tex -o exam\'.tex
 	xelatex -jobname exam exam\'

@@ -41,17 +41,15 @@ For example:
 
 \item Formation:
 \[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS B : A -> U|}
-\rule{$\Pi$F}\BIC{|Gamma ENTAILS Pi' A B : U|} \DP \]
+\rule{$\Pi$F}\BIC{|Gamma ENTAILS (Pi x A) B x : U|} \DP \]
 \item Introduction:
 \[ \AXC{|Gamma, x : A ENTAILS t : B x|}
-\rule{$\Pi$I}\UIC{|Gamma ENTAILS \x BIND t : Pi' A B|} \DP \]
+\rule{$\Pi$I}\UIC{|Gamma ENTAILS \x BIND t : (Pi x A) B x|} \DP \]
 \item Elimination:
-\[ \AXC{|Gamma ENTAILS f : Pi' A B|} \AXC{|Gamma ENTAILS a : A|}
+\[ \AXC{|Gamma ENTAILS f : (Pi x A) B x|} \AXC{|Gamma ENTAILS a : A|}
 \rule{$\Pi$E}\BIC{|Gamma ENTAILS f a : B a|} \DP \]
 
 \end{itemize}
-
-\marker{Notation} We usually write |(Pi x A) B x| for |Pi' A B|, regarding `|(Pi x A)|\kern-1.5pt' as a quantifier.
 
 \marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|.
 Derive
@@ -65,20 +63,18 @@ Derive
 
 \item Formation:
 \[ \AXC{|Gamma ENTAILS A : U|} \AXC{|Gamma ENTAILS B : A -> U|}
-\rule{$\Sigma$F}\BIC{|Gamma ENTAILS Sigma' A B : U|} \DP \]
+\rule{$\Sigma$F}\BIC{|Gamma ENTAILS (Sigma x A) B x : U|} \DP \]
 \item Introduction:
 \[ \AXC{|Gamma ENTAILS a : A|} \AXC{|Gamma ENTAILS b : B a|}
-\rule{$\Sigma$I}\BIC{|Gamma ENTAILS (a, b) : Sigma' A B|} \DP \]
+\rule{$\Sigma$I}\BIC{|Gamma ENTAILS (a, b) : (Sigma x A) B x|} \DP \]
 \item Elimination:
-\[ \AXC{|Gamma ENTAILS p : Sigma' A B|}
+\[ \AXC{|Gamma ENTAILS p : (Sigma x A) B x|}
 \rule{$\Sigma$EL}\UIC{|Gamma ENTAILS fst p : A|} \DP
 \quad
-\AXC{|Gamma ENTAILS p : Sigma' A B|}
+\AXC{|Gamma ENTAILS p : (Sigma x A) B x|}
 \rule{$\Sigma$ER}\UIC{|Gamma ENTAILS snd p : B (fst p)|} \DP \]
 
 \end{itemize}
-
-\marker{Notation} We usually write |(Sigma x A) B x| for |Sigma' A B|.
 
 \marker{Exercise} Let |Gamma DEFEQ A : U, B : U, C : A -> B -> U|. Derive
 \[ |Gamma ENTAILS _ : ((Sigma p (A TIMES B)) C (fst p) (snd p)) -> (Sigma x A) (Sigma y B) C x y| \]
@@ -148,7 +144,7 @@ In practice, however, we can drop the indices (as if assuming |U : U|) because t
 
 Let |Gamma DEFEQ A : U, B : A -> U, C : A -> U|.
 Try to derive
-\[ |Gamma ENTAILS _ : ((Pi p (Sigma' A B)) C (fst p)) -> (Pi x A) B x -> C x| \]
+\[ |Gamma ENTAILS _ : ((Pi p (Sigma x A B x)) C (fst p)) -> (Pi y A) B y -> C y| \]
 \ldots\ and you should notice some problems.
 
 So far we have been concentrating on the \emph{statics} of type theory --- how to match program structure with type structure.
@@ -268,18 +264,18 @@ Once we establish that two sets are judgementally equal, we can transfer terms b
 We can state congruence rules for dependent products and sums only after we have the conversion rule. Why?
 
 \[ \AXC{|Gamma ENTAILS a = a PRIME IN A|} \AXC{|Gamma ENTAILS b = b PRIME IN B a|}
-\BIC{|Gamma ENTAILS (a, b) = (a PRIME, b PRIME) IN Sigma' A B|} \DP \]
+\BIC{|Gamma ENTAILS (a, b) = (a PRIME, b PRIME) IN (Sigma x A) B x|} \DP \]
 
-\[ \AXC{|Gamma ENTAILS p = p PRIME IN Sigma' A B|}
+\[ \AXC{|Gamma ENTAILS p = p PRIME IN (Sigma x A) B x|}
 \UIC{|Gamma ENTAILS fst p = fst p PRIME IN A|} \DP
 \quad
-\AXC{|Gamma ENTAILS p = p PRIME IN Sigma' A B|}
+\AXC{|Gamma ENTAILS p = p PRIME IN (Sigma x A) B x|}
 \UIC{|Gamma ENTAILS snd p = snd p PRIME IN B (fst p)|} \DP \]
 
 \[ \AXC{|Gamma, x : A ENTAILS t = t PRIME IN B x|}
-\UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN Pi' A B|} \DP \]
+\UIC{|Gamma ENTAILS \x BIND t = \x BIND t PRIME IN (Pi x A) B x|} \DP \]
 
-\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN Pi' A B|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
+\[ \AXC{|Gamma ENTAILS f = f SKIP PRIME IN (Pi x A) B x|} \AXC{|Gamma ENTAILS a = a PRIME IN A|}
 \BIC{|Gamma ENTAILS f a = f SKIP PRIME a PRIME IN B a|} \DP \]
 
 \end{frame}
