@@ -135,11 +135,9 @@ suc m +' n = m +' suc n
 Shub : ℕ → ℕ → Set
 Shub m n = (k : ℕ) → Sub (k +' m) (k +' n)
 
-open import Function using (_∘_)
-
 _//_ : {m n : ℕ} (θ : Shub m n) → Term m → Term n
 θ // var i   = θ zero i
-θ // ƛ t     = ƛ ((θ ∘ suc) // t)
+θ // ƛ t     = ƛ ((λ k → θ (suc k)) // t)
 θ // (s · t) = (θ // s) · (θ // t)
 
 Ren : ℕ → ℕ → Set
