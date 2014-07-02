@@ -1,0 +1,165 @@
+\documentclass{article}
+
+%include agda.fmt
+
+\newcommand{\relation}[1]{\kern1.5pt\mathrel{#1}\kern1pt}
+\newcommand{\operator}[1]{\kern-2pt\mathop{#1}\kern-3pt}
+\newcommand{\constant}[1]{\texttt{#1}}
+
+%subst varid x = "\textit{" x "}"
+%subst conid x = "\textit{" x "}"
+
+%format ( = "\text("
+%format ) = "\text)"
+%format , = "\text{\,,~}"
+%format -> = "\relation{\to}"
+%format <-> = "\relation{\leftrightarrow}"
+%format \ = "\lambda\kern1pt"
+%format (highlight(x)) = "{\color{red}" x "}"
+%format (dehighlight(x)) = "{\color[gray]{.9}" x "}"
+%format (sub (t)) = "\mkern-\medmuskip_{" t "}"
+%format (subst (t) (x)) = "\![\kern.5pt" t "/" x "\kern1.225pt]"
+%format (Subst (t) (x)) = "\![\kern.5pt" t "\kern1pt/\kern1pt" x "\kern1.225pt]"
+%format SKIP = "\mkern-\medmuskip\kern1pt"
+%format PRIME = "\mkern-\medmuskip^\prime"
+%format 0 = "\mathsf 0"
+%format 1 = "\mathsf 1"
+%format 2 = "\mathsf 2"
+
+%format : = "\relation{:}"
+%format :: = "\relation{::}"
+%format ENTAILS = "\relation{\vdash}\!"
+%format MODELS = "\relation{\models}\!"
+%format BIND = "\kern-2pt."
+%format COPY = "\text{---}"
+%format = = "\relation{=}\kern-.75pt"
+%format DEFEQ = "\kern-2pt\mathrel{\mathop:}=\kern-2pt"
+%format IN = "\kern1.5pt\in\kern-1.5pt"
+%format ; = "\text{\,;~}"
+%format U = "\kern1pt\mathcal U\kern-.5pt"
+%format TIMES = "\operator{\times}"
+%format fst = "\constant{fst}"
+%format snd = "\constant{snd}"
+%format fst' = "\textit{fst}"
+%format snd' = "\textit{snd}"
+%format PLUS = "\operator{+}"
+%format left = "\constant{left}"
+%format right = "\constant{right}"
+%format case = "\constant{case}"
+%format TOP = "\top"
+%format unit = "\constant{unit}"
+%format BOT = "\bot"
+%format absurd = "\constant{absurd}"
+%format NEG = "\neg\!"
+%format BOOL = "\constant{Bool}"
+%format false = "\constant{false}"
+%format true = "\constant{true}"
+%format Pi' = "\Pi"
+%format (Pi (x) (t)) = "\Pi\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1.25pt]\kern1.5pt"
+%format Sigma' = "\Sigma"
+%format (Sigma (x) (t)) = "\Sigma\kern1pt[\kern1pt" x ":\kern-.75pt" t "\kern1.25pt]\kern1.5pt"
+%format LEM = "\constant{LEM}"
+%format Id = "\constant{Id}"
+%format refl = "\constant{refl}"
+%format transport = "\constant{transport}"
+%format J = "\constant{J}"
+%format J' = "J"
+
+%format Nat = "\mathbb N"
+%format zero = "\constant{zero}"
+%format suc = "\constant{suc}"
+%format ind = "\constant{ind}"
+%format Gamma = "\Gamma"
+%format sigma = "\sigma"
+
+%format * = "\kern-1pt\times\kern-1pt"
+
+%format (sem(t)) = "[\![" t "\kern.75pt]\!]"
+
+%format YCOMB = "\constant{Y}\kern-1.5pt"
+
+\renewcommand{\rule}[1]{\RightLabel{\footnotesize (#1)}}
+
+\usepackage[paperwidth=150cm,paperheight=20cm,margin=2cm]{geometry}
+\usepackage{nopageno}
+
+\usepackage{bussproofs}
+\EnableBpAbbreviations
+
+\begin{document}
+
+\[
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS x : A|}
+\rule{$\Pi$E}\BIC{|COPY ENTAILS r x : (Sigma y B) R x y|}
+\rule{$\Sigma$EL}\UIC{|COPY , x : A ENTAILS fst (r x) : B|}
+\rule{$\to$I}\UIC{|COPY ENTAILS \ x BIND fst (r x) : A -> B|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS x PRIME : A|}
+\rule{$\Pi$E}\BIC{|COPY ENTAILS r x PRIME : (Sigma y B) R x PRIME y|}
+\rule{$\Sigma$ER}\UIC{|COPY ENTAILS snd (r x PRIME) : R x PRIME (fst (r x PRIME))|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS R : A -> B -> U|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS x PRIME : A|}
+\rule{$\to$I}\BIC{|COPY ENTAILS R x PRIME : B -> U|}
+\rule{refl}\UIC{|COPY ENTAILS R x PRIME = R x PRIME IN B -> U|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS x : A|}
+\rule{$\Pi$E}\BIC{|COPY ENTAILS r x : (Sigma y B) R x y|}
+\rule{$\Sigma$EL}\UIC{|COPY , x : A ENTAILS fst (r x) : B|}
+\AXC{}
+\rule{V}\UIC{|COPY ENTAILS x PRIME : A|}
+\rule{$\to$C}\BIC{|COPY ENTAILS (\ x BIND fst (r x)) x PRIME = fst (r x PRIME) IN B|}
+\rule{sym}\UIC{|COPY ENTAILS fst (r x PRIME) = (\ x BIND fst (r x)) x PRIME IN B|}
+\rule{cong}\BIC{|COPY ENTAILS R x PRIME (fst (r x PRIME)) = R x PRIME ((\ x BIND fst (r x)) x PRIME) IN U|}
+\rule{conv}\BIC{|COPY , x PRIME : A ENTAILS snd (r x PRIME) IN R x PRIME ((\ x BIND fst (r x)) x PRIME)|}
+\rule{$\Pi$I}\UIC{|COPY ENTAILS \ x PRIME BIND snd (r x PRIME) : (Pi (x PRIME) A) R x PRIME ((\ x BIND fst (r x)) x PRIME)|}
+\rule{$\Sigma$I}\BIC{|COPY , r : (Pi x A) (Sigma y B) R x y ENTAILS ((\ x BIND fst (r x)) , (\ x PRIME BIND snd (r x PRIME))) : (Sigma f (A -> B)) (Pi (x PRIME) A) R x PRIME (f x PRIME)|}
+\rule{$\to$I}\UIC{|A : U, B : U, R : A -> B -> U ENTAILS \ r BIND ((\ x BIND fst (r x)) , (\ x PRIME BIND snd (r x PRIME))) : ((Pi x A) (Sigma y B) R x y) -> (Sigma f (A -> B)) (Pi (x PRIME) A) R x PRIME (f x PRIME)|}
+\DP \]
+
+\[
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x : A ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x : A ENTAILS x : A|}
+\rule{$\Pi$E}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x : A ENTAILS r x : (Sigma y B) R x y|}
+\rule{$\Sigma$EL}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x : A ENTAILS fst (r x) : B|}
+\rule{$\to$I}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y ENTAILS \ x BIND fst (r x) : A -> B|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS x PRIME : A|}
+\rule{$\Pi$E}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS r x PRIME : (Sigma y B) R x PRIME y|}
+\rule{$\Sigma$ER}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS snd (r x PRIME) : R x PRIME (fst (r x PRIME))|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS R : A -> B -> U|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS x PRIME : A|}
+\rule{$\to$I}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS R x PRIME : B -> U|}
+\rule{refl}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS R x PRIME = R x PRIME IN B -> U|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A , x : A ENTAILS r : (Pi x A) (Sigma y B) R x y|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A , x : A ENTAILS x : A|}
+\rule{$\Pi$E}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A , x : A ENTAILS r x : (Sigma y B) R x y|}
+\rule{$\Sigma$EL}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A , x : A ENTAILS fst (r x) : B|}
+\AXC{}
+\rule{V}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS x PRIME : A|}
+\rule{$\to$C}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS (\ x BIND fst (r x)) x PRIME = fst (r x PRIME) IN B|}
+\rule{sym}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS fst (r x PRIME) = (\ x BIND fst (r x)) x PRIME IN B|}
+\rule{cong}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS R x PRIME (fst (r x PRIME)) = R x PRIME ((\ x BIND fst (r x)) x PRIME) IN U|}
+\rule{conv}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y , x PRIME : A ENTAILS snd (r x PRIME) IN R x PRIME ((\ x BIND fst (r x)) x PRIME)|}
+\rule{$\Pi$I}\UIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y ENTAILS \ x PRIME BIND snd (r x PRIME) : (Pi (x PRIME) A) R x PRIME ((\ x BIND fst (r x)) x PRIME)|}
+\rule{$\Sigma$I}\BIC{|A : U, B : U, R : A -> B -> U , r : (Pi x A) (Sigma y B) R x y ENTAILS ((\ x BIND fst (r x)) , (\ x PRIME BIND snd (r x PRIME))) : (Sigma f (A -> B)) (Pi (x PRIME) A) R x PRIME (f x PRIME)|}
+\rule{$\to$I}\UIC{|A : U, B : U, R : A -> B -> U ENTAILS \ r BIND ((\ x BIND fst (r x)) , (\ x PRIME BIND snd (r x PRIME))) : ((Pi x A) (Sigma y B) R x y) -> (Sigma f (A -> B)) (Pi (x PRIME) A) R x PRIME (f x PRIME)|}
+\DP \]
+
+\end{document}

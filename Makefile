@@ -8,6 +8,10 @@ $(lectures):
 	$(lhs2TeX) $@.tex -o $@\'.tex
 	xelatex -jobname $@ $@\'
 
+AC:
+	$(lhs2TeX) AC.tex -o AC\'.tex
+	xelatex -jobname AC AC\'
+
 4up: $(lectures:=.pdf)
 	pdfjam --nup 2x2 --landscape --frame true --delta ".25cm .5cm" --scale .95 --suffix "4up" --batch $(lectures:=.pdf)
 	pdfjam $(lectures:=-4up.pdf) --fitpaper true --outfile lectures-4up.pdf

@@ -1,10 +1,14 @@
+-- {-# OPTIONS --copatterns #-}
+
 module Implicational where
 
 
 --------
 -- prelude
 
-open import Data.String
+postulate String : Set
+
+{-# BUILTIN STRING String #-}
 
 record Σ (A : Set) (B : A → Set) : Set where
   constructor _,_
@@ -27,6 +31,8 @@ uncurry f (x , y) = f x y
 data ℕ : Set where
   zero : ℕ
   suc  : ℕ → ℕ
+
+{-# BUILTIN NATURAL ℕ #-}
 
 data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
@@ -56,8 +62,8 @@ data Bool : Set where
   true  : Bool
 
 if_then_else_ : {A : Set} → Bool → A → A → A
-if false then x else y = x
-if true  then x else y = y
+if false then x else y = y
+if true  then x else y = x
 
 data _≡_ {A : Set} (x : A) : A → Set where
   refl : x ≡ x
@@ -106,10 +112,107 @@ data _⊢_ : Cxt → PROP → Set where
 --------
 -- simply typed λ-calculus à la Curry
 
+infixl 5 _·_
+
 data Term : ℕ → Set where  -- indexed with the number of available bound variables
   var : {n : ℕ} → Fin n           → Term n
   ƛ   : {n : ℕ} → Term (suc n)    → Term n
   _·_ : {n : ℕ} → Term n → Term n → Term n
+
+{-- detour: an evaluator
+
+Sub : ℕ → ℕ → Set
+Sub m n = Fin m → Term n
+
+_+'_ : ℕ → ℕ → ℕ
+zero  +' n = n
+suc m +' n = m +' suc n
+
+Shub : ℕ → ℕ → Set
+Shub m n = (k : ℕ) → Sub (k +' m) (k +' n)
+
+open import Function using (_∘_)
+
+_//_ : {m n : ℕ} (θ : Shub m n) → Term m → Term n
+θ // var i   = θ zero i
+θ // ƛ t     = ƛ ((θ ∘ suc) // t)
+θ // (s · t) = (θ // s) · (θ // t)
+
+Ren : ℕ → ℕ → Set
+Ren m n = Fin m → Fin n
+
+wkr : {m n : ℕ} → Ren m n → Ren (suc m) (suc n)
+wkr r zero    = zero
+wkr r (suc i) = suc (r i)
+
+ren : {m n : ℕ} → Ren m n → Shub m n
+ren r zero    = var ∘ r
+ren r (suc k) = ren (wkr r) k
+
+wks : {m n : ℕ} → Sub m n → Sub (suc m) (suc n)
+wks s zero    = var zero
+wks s (suc i) = ren suc // s i
+
+sub : {m n : ℕ} → Sub m n → Shub m n
+sub s zero    = s
+sub s (suc k) = sub (wks s) k
+
+zsub : {n : ℕ} → Term n → Sub (suc n) n
+zsub t zero    = t
+zsub t (suc i) = var i
+
+_∧_ : Bool → Bool → Bool
+false ∧ b = false
+true  ∧ b = b
+
+normal : {n : ℕ} → Term n → Bool
+normal (var i       ) = true
+normal (ƛ t         ) = normal t
+normal (var i    · t) = normal t
+normal (ƛ s      · t) = false
+normal ((s · s') · t) = normal (s · s') ∧ normal t
+
+reduce : {n : ℕ} → Term n → Term n
+reduce (var i       ) = var i
+reduce (ƛ t         ) = ƛ (reduce t)
+reduce (var i    · t) = var i · reduce t
+reduce (ƛ s      · t) = sub (zsub t) // s
+reduce ((s · s') · t) = reduce (s · s') · reduce t
+
+record Stream (A : Set) : Set where
+  coinductive
+  constructor _∷_
+  field
+    head : A
+    tail : Stream A
+
+open Stream
+
+reduce* : {n : ℕ} → Term n → Stream (Term n)
+head (reduce* t) = t
+tail (reduce* t) = reduce* (reduce t)
+
+find-normal : ℕ → {n : ℕ} → Stream (Term n) → Term n
+find-normal zero    ts = head ts
+find-normal (suc k) ts = if normal (head ts) then head ts else find-normal k (tail ts)
+
+run : {n : ℕ} → Term n → Term n
+run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 (reduce* t)
+
+iter : ℕ → {n : ℕ} → Term (suc (suc n))
+iter zero    = var zero
+iter (suc n) = var (suc zero) · iter n
+
+church : ℕ → {n : ℕ} → Term n
+church n = ƛ (ƛ (iter n))
+
+plus : {n : ℕ} → Term n
+plus = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · var (suc zero) · (var (suc (suc zero)) · var (suc zero) · var zero)))))
+
+mult : {n : ℕ} → Term n
+mult = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · (plus · var (suc (suc zero))) · church 0))))
+
+-- end of detour -}
 
 infix 2 _⊢_∶_
 
@@ -173,7 +276,7 @@ Assignment = Var → Bool
 
 ⟦_⟧ : PROP → Assignment → Bool
 ⟦ atom x ⟧ σ = σ x
-⟦ p ⇒ q  ⟧ σ = if ⟦ p ⟧ σ then true else ⟦ q ⟧ σ
+⟦ p ⇒ q  ⟧ σ = if ⟦ p ⟧ σ then ⟦ q ⟧ σ else true
 
 infix 3 _models_
 
