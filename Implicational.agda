@@ -10,6 +10,9 @@ postulate String : Set
 
 {-# BUILTIN STRING String #-}
 
+id : {A : Set} → A → A
+id x = x
+
 record Σ (A : Set) (B : A → Set) : Set where
   constructor _,_
   field
@@ -120,6 +123,7 @@ data Term : ℕ → Set where  -- indexed with the number of available bound var
   _·_ : {n : ℕ} → Term n → Term n → Term n
 
 {-- detour: an evaluator
+-- (ref: Conor McBride's Cambridge lectures)
 
 Sub : ℕ → ℕ → Set
 Sub m n = Fin m → Term n
@@ -211,6 +215,16 @@ plus = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · var (suc zero) · (var (suc
 
 mult : {n : ℕ} → Term n
 mult = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · (plus · var (suc (suc zero))) · church 0))))
+
+orned-iter : List ℕ → {n : ℕ} → Term (suc (suc n))
+orned-iter []       = var zero
+orned-iter (x ∷ xs) = var (suc zero) · church x · orned-iter xs
+
+list : List ℕ → {n : ℕ} → Term n
+list xs = ƛ (ƛ (orned-iter xs))
+
+sum : {n : ℕ} → Term n
+sum = ƛ (var zero · plus · church 0)
 
 -- end of detour -}
 

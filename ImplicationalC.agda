@@ -1,10 +1,10 @@
--- {-# OPTIONS --copatterns #-}
+{-# OPTIONS --copatterns #-}
 
 module ImplicationalC where
 
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.HeterogeneousEquality using () renaming (_≅_ to _≃_; refl to hrefl; trans to htrans; ≡-to-≅ to ≡-to-≃)
-open import Function using (_∋_; _∘_)
+open import Function using (_∋_; _∘_; id)
 
 
 --------
@@ -41,6 +41,8 @@ data ℕ : Set where
 data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
   suc  : {n : ℕ} → Fin n → Fin (suc n)
+
+infixr 5 _∷_
 
 data List (A : Set) : Set where
   []  : List A
@@ -123,7 +125,8 @@ data Term : ℕ → Set where  -- indexed with the number of available bound var
   ƛ   : {n : ℕ} → Term (suc n)    → Term n
   _·_ : {n : ℕ} → Term n → Term n → Term n
 
-{-- detour: an evaluator
+-- detour: an evaluator
+-- (ref: Conor McBride's Cambridge lectures)
 
 Sub : ℕ → ℕ → Set
 Sub m n = Fin m → Term n
@@ -214,7 +217,17 @@ plus = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · var (suc zero) · (var (suc
 mult : {n : ℕ} → Term n
 mult = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · (plus · var (suc (suc zero))) · church 0))))
 
--- end of detour -}
+orned-iter : List ℕ → {n : ℕ} → Term (suc (suc n))
+orned-iter []       = var zero
+orned-iter (x ∷ xs) = var (suc zero) · church x · orned-iter xs
+
+list : List ℕ → {n : ℕ} → Term n
+list xs = ƛ (ƛ (orned-iter xs))
+
+sum : {n : ℕ} → Term n
+sum = ƛ (var zero · plus · church 0)
+
+-- end of detour
 
 infix 2 _⊢_∶_
 
