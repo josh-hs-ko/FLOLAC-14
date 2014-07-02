@@ -148,7 +148,7 @@ wkr r zero    = zero
 wkr r (suc i) = suc (r i)
 
 ren : {m n : ℕ} → Ren m n → Shub m n
-ren r zero    = var ∘ r
+ren r zero    = λ i → var (r i)
 ren r (suc k) = ren (wkr r) k
 
 wks : {m n : ℕ} → Sub m n → Sub (suc m) (suc n)
@@ -194,12 +194,12 @@ reduce* : {n : ℕ} → Term n → Stream (Term n)
 head (reduce* t) = t
 tail (reduce* t) = reduce* (reduce t)
 
-find-normal : ℕ → {n : ℕ} → Stream (Term n) → Term n
-find-normal zero    ts = head ts
-find-normal (suc k) ts = if normal (head ts) then head ts else find-normal k (tail ts)
+find-normal : ℕ → ℕ → {n : ℕ} → Stream (Term n) → Term n × ℕ
+find-normal zero    n ts = head ts , n
+find-normal (suc k) n ts = if normal (head ts) then (head ts , n) else find-normal k (suc n) (tail ts)
 
-run : {n : ℕ} → Term n → Term n
-run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 (reduce* t)
+run : {n : ℕ} → Term n → Term n × ℕ
+run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 (reduce* t)
 
 iter : ℕ → {n : ℕ} → Term (suc (suc n))
 iter zero    = var zero

@@ -197,12 +197,12 @@ reduce* : {n : ℕ} → Term n → Stream (Term n)
 head (reduce* t) = t
 tail (reduce* t) = reduce* (reduce t)
 
-find-normal : ℕ → {n : ℕ} → Stream (Term n) → Term n
-find-normal zero    ts = head ts
-find-normal (suc k) ts = if normal (head ts) then head ts else find-normal k (tail ts)
+find-normal : ℕ → ℕ → {n : ℕ} → Stream (Term n) → Term n × ℕ
+find-normal zero    n ts = head ts , n
+find-normal (suc k) n ts = if normal (head ts) then (head ts , n) else find-normal k (suc n) (tail ts)
 
-run : {n : ℕ} → Term n → Term n
-run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 (reduce* t)
+run : {n : ℕ} → Term n → Term n × ℕ
+run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 (reduce* t)
 
 iter : ℕ → {n : ℕ} → Term (suc (suc n))
 iter zero    = var zero
