@@ -117,7 +117,7 @@ data _⊢_ : Cxt → PROP → Set where
 
 infixl 5 _·_
 
-data Term : ℕ → Set where  -- indexed with the number of available bound variables
+data Term : ℕ → Set where  -- indexed with the number of free variables
   var : {n : ℕ} → Fin n           → Term n
   ƛ   : {n : ℕ} → Term (suc n)    → Term n
   _·_ : {n : ℕ} → Term n → Term n → Term n
