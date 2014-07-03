@@ -41,6 +41,8 @@ data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
   suc  : {n : ℕ} → Fin n → Fin (suc n)
 
+infixr 5 _∷_
+
 data List (A : Set) : Set where
   []  : List A
   _∷_ : A → List A → List A
