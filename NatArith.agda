@@ -8,6 +8,11 @@ data ℕ : Set where
   zero : ℕ
   suc  : ℕ → ℕ
 
+{-# BUILTIN NATURAL ℕ #-}
+-- for Agda < 2.4.0
+-- {-# BUILTIN ZERO zero #-}
+-- {-# BUILTIN SUC  suc  #-}
+
 ind : (P : ℕ → Set) → P zero → ((n : ℕ) → P n → P (suc n)) → (n : ℕ) → P n
 ind P z s zero    = z
 ind P z s (suc n) = s n (ind P z s n)

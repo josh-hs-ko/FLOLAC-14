@@ -1,4 +1,4 @@
--- {-# OPTIONS --copatterns #-}
+-- {-# OPTIONS --copatterns #-} -- Agda >= 2.4.0
 
 module Implicational where
 
@@ -36,6 +36,9 @@ data ℕ : Set where
   suc  : ℕ → ℕ
 
 {-# BUILTIN NATURAL ℕ #-}
+-- for Agda < 2.4.0
+-- {-# BUILTIN ZERO zero #-}
+-- {-# BUILTIN SUC  suc  #-}
 
 data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
@@ -214,7 +217,7 @@ plus : {n : ℕ} → Term n
 plus = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · var (suc zero) · (var (suc (suc zero)) · var (suc zero) · var zero)))))
 
 mult : {n : ℕ} → Term n
-mult = ƛ (ƛ (ƛ (ƛ (var (suc (suc (suc zero))) · (plus · var (suc (suc zero))) · church 0))))
+mult = ƛ (ƛ (var (suc zero) · (plus · var zero) · church 0))
 
 orned-iter : List ℕ → {n : ℕ} → Term (suc (suc n))
 orned-iter []       = var zero
@@ -225,6 +228,9 @@ list xs = ƛ (ƛ (orned-iter xs))
 
 sum : {n : ℕ} → Term n
 sum = ƛ (var zero · plus · church 0)
+
+prod : {n : ℕ} → Term n
+prod = ƛ (var zero · mult · church 1)
 
 -- end of detour -}
 
