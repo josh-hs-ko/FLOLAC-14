@@ -185,7 +185,7 @@ reduce (var i       ) = var i
 reduce (ƛ t         ) = ƛ (reduce t)
 reduce (var i    · t) = var i · reduce t
 reduce (ƛ s      · t) = sub (zsub t) // s
-reduce ((s · s') · t) = reduce (s · s') · reduce t
+reduce ((s · s') · t) = if normal (s · s') then (s · s') · reduce t else reduce (s · s') · t
 
 record Stream (A : Set) : Set where
   coinductive
