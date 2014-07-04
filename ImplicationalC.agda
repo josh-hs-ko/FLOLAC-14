@@ -1,5 +1,3 @@
-{-# OPTIONS --copatterns #-} -- Agda >= 2.4.0
-
 module ImplicationalC where
 
 open import Relation.Binary.PropositionalEquality
@@ -187,25 +185,12 @@ reduce (var i    · t) = var i · reduce t
 reduce (ƛ s      · t) = sub (zsub t) // s
 reduce ((s · s') · t) = if normal (s · s') then (s · s') · reduce t else reduce (s · s') · t
 
-record Stream (A : Set) : Set where
-  coinductive
-  constructor _∷_
-  field
-    head : A
-    tail : Stream A
-
-open Stream
-
-reduce* : {n : ℕ} → Term n → Stream (Term n)
-head (reduce* t) = t
-tail (reduce* t) = reduce* (reduce t)
-
-find-normal : ℕ → ℕ → {n : ℕ} → Stream (Term n) → Term n × ℕ
-find-normal zero    n ts = head ts , n
-find-normal (suc k) n ts = if normal (head ts) then (head ts , n) else find-normal k (suc n) (tail ts)
+find-normal : ℕ → ℕ → {n : ℕ} → Term n → Term n × ℕ
+find-normal zero    n t = t , n
+find-normal (suc k) n t = if normal t then (t , n) else find-normal k (suc n) (reduce t)
 
 run : {n : ℕ} → Term n → Term n × ℕ
-run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 (reduce* t)
+run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 t
 
 iter : ℕ → {n : ℕ} → Term (suc (suc n))
 iter zero    = var zero

@@ -1,5 +1,3 @@
--- {-# OPTIONS --copatterns #-} -- Agda >= 2.4.0
-
 module Implicational where
 
 
@@ -100,7 +98,7 @@ data _⊢_ : Cxt → PROP → Set where
 
             p ∈ Γ    →
           ---------
-            Γ ⊢ p
+            Γ ⊢ p  -- ⊢ (turnstile): entails
 
   ⇒I : {Γ : Cxt} {p q : PROP} →
 
@@ -113,6 +111,9 @@ data _⊢_ : Cxt → PROP → Set where
           Γ ⊢ p ⇒ q    →    Γ ⊢ p    →
         ---------------------------- 
                    Γ ⊢ q
+
+diag : [] ⊢ (atom "A" ⇒ atom "A" ⇒ atom "B") ⇒ atom "A" ⇒ atom "B"
+diag = ⇒I (⇒I (⇒E (⇒E (assum (suc zero)) (assum zero)) (assum zero)))
 
 -- consistency : ¬ ((p : PROP) → [] ⊢ p)
 
@@ -127,7 +128,10 @@ data Term : ℕ → Set where  -- indexed with the number of free variables
   ƛ   : {n : ℕ} → Term (suc n)    → Term n
   _·_ : {n : ℕ} → Term n → Term n → Term n
 
-{-- detour: an evaluator
+k : Term 0
+k = ƛ (ƛ (var (suc zero)))  -- λx. λy. x
+
+-- detour: an evaluator
 -- (ref: Conor McBride's Cambridge lectures)
 
 Sub : ℕ → ℕ → Set
@@ -186,25 +190,12 @@ reduce (var i    · t) = var i · reduce t
 reduce (ƛ s      · t) = sub (zsub t) // s
 reduce ((s · s') · t) = if normal (s · s') then (s · s') · reduce t else reduce (s · s') · t
 
-record Stream (A : Set) : Set where
-  coinductive
-  constructor _∷_
-  field
-    head : A
-    tail : Stream A
-
-open Stream
-
-reduce* : {n : ℕ} → Term n → Stream (Term n)
-head (reduce* t) = t
-tail (reduce* t) = reduce* (reduce t)
-
-find-normal : ℕ → ℕ → {n : ℕ} → Stream (Term n) → Term n × ℕ
-find-normal zero    n ts = head ts , n
-find-normal (suc k) n ts = if normal (head ts) then (head ts , n) else find-normal k (suc n) (tail ts)
+find-normal : ℕ → ℕ → {n : ℕ} → Term n → Term n × ℕ
+find-normal zero    n t = t , n
+find-normal (suc k) n t = if normal t then (t , n) else find-normal k (suc n) (reduce t)
 
 run : {n : ℕ} → Term n → Term n × ℕ
-run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 (reduce* t)
+run t = find-normal 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 0 t
 
 iter : ℕ → {n : ℕ} → Term (suc (suc n))
 iter zero    = var zero
@@ -232,7 +223,7 @@ sum = ƛ (var zero · plus · church 0)
 prod : {n : ℕ} → Term n
 prod = ƛ (var zero · mult · church 1)
 
--- end of detour -}
+-- end of detour
 
 infix 2 _⊢_∶_
 
@@ -260,8 +251,14 @@ data _⊢_∶_ : (Γ : Cxt) → Term (length Γ) → PROP → Set where
 --------
 -- The Curry-Howard isomorphism
 
+toFin : {Γ : Cxt} {p : PROP} → p ∈ Γ → Fin (length Γ)
+toFin zero = zero
+toFin (suc i) = suc (toFin i)
+
 toTerm : {Γ : Cxt} {p : PROP} → Γ ⊢ p → Term (length Γ)
-toTerm = {!!}
+toTerm (assum x) = var (toFin x)
+toTerm (⇒I d) = ƛ (toTerm d)
+toTerm (⇒E d d₁) = toTerm d · toTerm d₁
 
 toTyping : {Γ : Cxt} {p : PROP} (d : Γ ⊢ p) → Γ ⊢ toTerm d ∶ p
 toTyping = {!!}
@@ -316,7 +313,11 @@ _⊧_ : Cxt → PROP → Set
 Γ ⊧ p = (σ : Assignment) → σ Models Γ → σ models p
 
 validity-exercise : (p q : PROP) → Valid ((p ⇒ (p ⇒ q)) ⇒ (p ⇒ q))
-validity-exercise = {!!}
+validity-exercise p q σ with ⟦ p ⟧ σ | ⟦ q ⟧ σ
+validity-exercise p q σ | false | false = refl
+validity-exercise p q σ | false | true  = refl
+validity-exercise p q σ | true  | false = refl
+validity-exercise p q σ | true  | true  = refl
 
 validity-implies-semantic-consequence : (p : PROP) → Valid p → [] ⊧ p
 validity-implies-semantic-consequence = {!!}
@@ -336,6 +337,8 @@ impossible : {b : Bool} → b ≡ true → b ≡ false → {A : Set} → A
 impossible refl ()
 
 soundness : {Γ : Cxt} {p : PROP} → Γ ⊢ p → Γ ⊧ p
-soundness = {!!}
+soundness (assum x) σ x₁ = {!!}
+soundness (⇒I d) σ x = {!!}
+soundness (⇒E d d₁) σ x = {!!}
 
 -- completeness : {Γ : Cxt} {p : PROP} → Γ ⊧ p → Γ ⊢ p
